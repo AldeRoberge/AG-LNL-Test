@@ -3,11 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using ChessEngine.Engine;
+using DefaultNamespace;
 using ResourcesLoader;
 using UnityEngine;
 using UnityEngine.Events;
 using Object = UnityEngine.Object;
 
+
+public static class ChessBoardConstants
+{
+    public const int Size = 8;
+}
 
 public class ChessBoardAssets : MonoBehaviour
 {
@@ -29,7 +35,7 @@ public class ChessBoardAssets : MonoBehaviour
     public UnityEvent OnLoadComplete = new UnityEvent();
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         // Tiles
         TileWhiteMaterial = ResourceLoader.Load<Material>("Chess/Tiles/Materials/TileMatBlack");
@@ -65,8 +71,7 @@ public class ChessBoardGenerator : MonoBehaviour
         engine = new Engine("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
         _chessBoardAssets = gameObject.AddComponent<ChessBoardAssets>();
-
-        _chessBoardAssets.OnLoadComplete.AddListener(GenerateGrid);
+        GenerateGrid();
     }
 
 
@@ -80,16 +85,19 @@ public class ChessBoardGenerator : MonoBehaviour
         tilesParent.transform.parent = board.transform;
         piecesParent.transform.parent = board.transform;
 
-        const int size = 8;
-
-        for (int x = 0; x < size; x++)
+        for (int x = 0; x < ChessBoardConstants.Size; x++)
         {
-            for (int y = 0; y < size; y++)
+            for (int y = 0; y < ChessBoardConstants.Size; y++)
             {
                 CreateTileAt(x, y, tilesParent);
                 CreatePieceAt(x, y, piecesParent);
             }
         }
+
+        // Rescale
+
+        board.transform.transform.position = new Vector3(-0.5f, 5.5f, 0.3f);
+        board.transform.localScale = new Vector3(0.04f, 0.04f, 0.04f);
     }
 
     const float tileOffset = 2.5f;
@@ -127,35 +135,41 @@ public class ChessBoardGenerator : MonoBehaviour
 
         if (piecePrefab != null)
         {
-            GameObject o = Instantiate(piecePrefab, new Vector3(x * tileOffset, 0, y * tileOffset), Quaternion.identity);
+            GameObject parentPiece = new GameObject();
+            parentPiece.transform.position = new Vector3(x * tileOffset, 0, y * tileOffset);
+            parentPiece.transform.parent = parent.transform;
 
-            if (piecePrefab != null)
+            GameObject piece = Instantiate(piecePrefab);
+            piece.name = "Piece";
+            piece.transform.parent = parentPiece.transform;
+
+            if (color == ChessPieceColor.White)
             {
-                if (color == ChessPieceColor.White)
-                {
-                    o.GetComponent<MeshRenderer>().material = _chessBoardAssets.PieceWhiteMaterial;
-                    o.name = "White";
-                }
-                else
-                {
-                    o.GetComponent<MeshRenderer>().material = _chessBoardAssets.PieceBlackMaterial;
-                    o.name = "Black";
-                }
+                parentPiece.name = "White";
+                piece.GetComponent<MeshRenderer>().material = _chessBoardAssets.PieceWhiteMaterial;
+            }
+            else
+            {
+                parentPiece.name = "Black";
+                piece.GetComponent<MeshRenderer>().material = _chessBoardAssets.PieceBlackMaterial;
             }
 
-            o.name += " " + chessPieceType + " (" + x + ", " + y + ")";
+            parentPiece.name += " " + chessPieceType + " (" + x + ", " + y + ")";
 
-            o.transform.Rotate(-90, 0, 0);
+            /* parentPiece.transform.Rotate(-90, 0, 0);
+ 
+             piece.transform.rotation();*/
 
-            o.transform.position = new Vector3(
-                o.transform.position.x,
-                o.transform.position.y + 3,
-                o.transform.position.z);
+            piece.transform.position = new Vector3(
+                parentPiece.transform.position.x,
+                parentPiece.transform.position.y + 3,
+                parentPiece.transform.position.z);
 
-            o.AddComponent<Rigidbody>();
-            o.AddComponent<BoxCollider>();
+            piece.AddComponent<Rigidbody>();
+            piece.AddComponent<BoxCollider>();
 
-            o.transform.parent = parent.transform;
+            Grabbable g = parentPiece.AddComponent<Grabbable>();
+            g.SetGrabbableObject(piece);
         }
     }
 
@@ -168,8 +182,8 @@ public class ChessBoardGenerator : MonoBehaviour
         o.transform.parent = parent.transform;
 
         if ((x + y) % 2 == 1)
-            o.GetComponent<MeshRenderer>().material = _chessBoardAssets.PieceBlackMaterial;
+            o.GetComponent<MeshRenderer>().material = _chessBoardAssets.TileBlackMaterial;
         else
-            o.GetComponent<MeshRenderer>().material = _chessBoardAssets.PieceWhiteMaterial;
+            o.GetComponent<MeshRenderer>().material = _chessBoardAssets.TileWhiteMaterial;
     }
 }

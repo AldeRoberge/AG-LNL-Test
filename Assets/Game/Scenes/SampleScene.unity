@@ -136,7 +136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1787004314717788802, guid: 8b66956a867f63941accdacd869358ca, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1787004314717788802, guid: 8b66956a867f63941accdacd869358ca, type: 3}
       propertyPath: m_LocalPosition.z
@@ -177,6 +177,14 @@ PrefabInstance:
     - target: {fileID: 1787004314717788804, guid: 8b66956a867f63941accdacd869358ca, type: 3}
       propertyPath: m_Name
       value: OVRCameraRigWithHands
+      objectReference: {fileID: 0}
+    - target: {fileID: 1827248075516670531, guid: 8b66956a867f63941accdacd869358ca, type: 3}
+      propertyPath: _enablePhysicsCapsules
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1827248077067592968, guid: 8b66956a867f63941accdacd869358ca, type: 3}
+      propertyPath: _enablePhysicsCapsules
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b66956a867f63941accdacd869358ca, type: 3}

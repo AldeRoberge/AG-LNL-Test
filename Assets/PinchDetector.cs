@@ -31,6 +31,10 @@ public class PinchDetector : MonoBehaviour
     {
         FingerTipObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         FingerTipObj.transform.localScale = new Vector3(0.025f, 0.025f, 0.025f);
+
+        SphereCollider s = FingerTipObj.GetComponent<SphereCollider>();
+        s.isTrigger = true;
+
     }
 
     // Update is called once per frame
@@ -44,7 +48,7 @@ public class PinchDetector : MonoBehaviour
     {
         if (OVRSkeleton.Bones.Count > 0)
         {
-            var tipPos = OVRSkeleton.Bones[(int) OVRSkeleton.BoneId.Hand_Index3].Transform.position;
+            var tipPos = OVRSkeleton.Bones[(int) OVRSkeleton.BoneId.Hand_IndexTip].Transform.position;
             FingerTipObj.transform.position = tipPos;
         }
     }
