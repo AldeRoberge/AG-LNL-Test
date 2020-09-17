@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Inits and links PinchDetectors to their given hands.
+/// </summary>
 public class PinchManager : MonoBehaviour
 {
-    private PinchDetector LeftHandPinch;
-    private PinchDetector RightHandPinch;
+    public PinchDetector LeftHandPinchDetector;
+    public PinchDetector RightHandPinchDetector;
 
     void Start()
     {
@@ -15,20 +19,20 @@ public class PinchManager : MonoBehaviour
 
     private void RegisterLeftHand()
     {
-        LeftHandPinch = gameObject.AddComponent<PinchDetector>();
-        LeftHandPinch.OVRHand = GetOVRHand(OVRHand.Hand.HandLeft);
-        LeftHandPinch.OVRSkeleton = GetOVRSkeleton(OVRSkeleton.SkeletonType.HandLeft);
+        LeftHandPinchDetector = gameObject.AddComponent<PinchDetector>();
+        LeftHandPinchDetector.OVRHand = GetOVRHand(OVRHand.Hand.HandLeft);
+        LeftHandPinchDetector.OVRSkeleton = GetOVRSkeleton(OVRSkeleton.SkeletonType.HandLeft);
     }
 
     private void RegisterRightHand()
     {
-        RightHandPinch = gameObject.AddComponent<PinchDetector>();
-        RightHandPinch.OVRHand = GetOVRHand(OVRHand.Hand.HandRight);
-        RightHandPinch.OVRSkeleton = GetOVRSkeleton(OVRSkeleton.SkeletonType.HandRight);
+        RightHandPinchDetector = gameObject.AddComponent<PinchDetector>();
+        RightHandPinchDetector.OVRHand = GetOVRHand(OVRHand.Hand.HandRight);
+        RightHandPinchDetector.OVRSkeleton = GetOVRSkeleton(OVRSkeleton.SkeletonType.HandRight);
     }
 
     /// <summary>
-    /// Utility to get the OVRHand for a given hand (left, right)
+    /// Utility to get the OVRHand for a given hand (left or right)
     /// </summary>
     private OVRHand GetOVRHand(OVRHand.Hand handType)
     {
@@ -36,12 +40,12 @@ public class PinchManager : MonoBehaviour
             if (hand.HandType == handType)
                 return hand;
 
-        Debug.LogError("[PinchManager] Could not get hand with hand type '" + handType + "'.");
+        Debug.LogError("[PinchManager] Could not get OVRHand with hand type '" + handType + "'.");
         return null;
     }
 
     /// <summary>
-    /// Utility to get the OVRSkeleton for a given hand (left, right)
+    /// Utility to get the OVRSkeleton for a given hand (left or right)
     /// </summary>
     private OVRSkeleton GetOVRSkeleton(OVRSkeleton.SkeletonType skeletonType)
     {
@@ -49,7 +53,7 @@ public class PinchManager : MonoBehaviour
             if (skeleton.GetSkeletonType() == skeletonType)
                 return skeleton;
 
-        Debug.LogError("[PinchManager] Could not get hand with skeleton type '" + skeletonType + "'.");
+        Debug.LogError("[PinchManager] Could not get OVRSkeleton with skeleton type '" + skeletonType + "'.");
         return null;
     }
 }
