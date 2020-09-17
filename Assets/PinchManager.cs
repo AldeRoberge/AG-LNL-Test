@@ -2,58 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-/// <summary>
-/// Inits and links PinchDetectors to their given hands.
-/// </summary>
 public class PinchManager : MonoBehaviour
 {
-    public PinchDetector LeftHandPinchDetector;
-    public PinchDetector RightHandPinchDetector;
-
+    // Start is called before the first frame update
     void Start()
     {
-        RegisterLeftHand();
-        RegisterRightHand();
+        PinchDetectorInitializer p = gameObject.AddComponent<PinchDetectorInitializer>();
+
+        p.LeftHandPinchDetector.OnPinchStart.AddListener(() =>
+        {
+            Debug.Log("Left hand pinched!");
+        });
+        
+        p.RightHandPinchDetector.OnPinchStart.AddListener(() =>
+        {
+            Debug.Log("Right hand pinched!");
+        });
     }
 
-    private void RegisterLeftHand()
+    // Update is called once per frame
+    void Update()
     {
-        LeftHandPinchDetector = gameObject.AddComponent<PinchDetector>();
-        LeftHandPinchDetector.OVRHand = GetOVRHand(OVRHand.Hand.HandLeft);
-        LeftHandPinchDetector.OVRSkeleton = GetOVRSkeleton(OVRSkeleton.SkeletonType.HandLeft);
-    }
-
-    private void RegisterRightHand()
-    {
-        RightHandPinchDetector = gameObject.AddComponent<PinchDetector>();
-        RightHandPinchDetector.OVRHand = GetOVRHand(OVRHand.Hand.HandRight);
-        RightHandPinchDetector.OVRSkeleton = GetOVRSkeleton(OVRSkeleton.SkeletonType.HandRight);
-    }
-
-    /// <summary>
-    /// Utility to get the OVRHand for a given hand (left or right)
-    /// </summary>
-    private OVRHand GetOVRHand(OVRHand.Hand handType)
-    {
-        foreach (var hand in GetComponentsInChildren<OVRHand>())
-            if (hand.HandType == handType)
-                return hand;
-
-        Debug.LogError("[PinchManager] Could not get OVRHand with hand type '" + handType + "'.");
-        return null;
-    }
-
-    /// <summary>
-    /// Utility to get the OVRSkeleton for a given hand (left or right)
-    /// </summary>
-    private OVRSkeleton GetOVRSkeleton(OVRSkeleton.SkeletonType skeletonType)
-    {
-        foreach (var skeleton in GetComponentsInChildren<OVRSkeleton>())
-            if (skeleton.GetSkeletonType() == skeletonType)
-                return skeleton;
-
-        Debug.LogError("[PinchManager] Could not get OVRSkeleton with skeleton type '" + skeletonType + "'.");
-        return null;
     }
 }

@@ -15,7 +15,7 @@ public class PinchDetector : MonoBehaviour
     public UnityEvent OnPinchStart = new UnityEvent();
     public UnityEvent OnPinchEnd = new UnityEvent();
 
-    void Start()
+    void Awake()
     {
         CreateFingerTipObj();
         AddListeners();
@@ -30,7 +30,7 @@ public class PinchDetector : MonoBehaviour
     private void CreateFingerTipObj()
     {
         FingerTipObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        FingerTipObj.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+        FingerTipObj.transform.localScale = new Vector3(0.025f, 0.025f, 0.025f);
     }
 
     // Update is called once per frame
@@ -39,19 +39,13 @@ public class PinchDetector : MonoBehaviour
         UpdateFingerTipPos();
         DetectPinch();
     }
-    
+
     private void UpdateFingerTipPos()
     {
-        try
+        if (OVRSkeleton.Bones.Count > 0)
         {
             var tipPos = OVRSkeleton.Bones[(int) OVRSkeleton.BoneId.Hand_Index3].Transform.position;
             FingerTipObj.transform.position = tipPos;
-
-            Debug.Log("Yeah");
-        }
-        catch (Exception e)
-        {
-            Debug.Log("Nope");
         }
     }
 
