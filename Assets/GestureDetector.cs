@@ -7,56 +7,21 @@ using UnityEngine.Events;
 public class GestureDetector : MonoBehaviour
 {
     
-    public OVRSkeleton RightHandSkeleton;
-    public OVRSkeleton LeftHandSkeleton;
-
-    public GameObject ToMove;
-    public GameObject ToMove2;
+    public OVRHand OVRHand;
+    public OVRSkeleton OVRSkeleton;
     
-
-    private OVRHand _ovrLeftHand;
-    public bool IsCurrentlyPinchingLeft;
-
-    public UnityEvent OnPinchLeft = new UnityEvent();
-    public UnityEvent OnUnpinchLeft = new UnityEvent();
-
-
-    private OVRHand _ovrRightHand;
-    public bool IsCurrentlyPinchingRight;
-
-    public UnityEvent OnPinchRight = new UnityEvent();
-    public UnityEvent OnUnpinchRight = new UnityEvent();
-
-
-    public Vector3 RightPointPos;
-
-    public Vector3 LeftPointPos;
-
+    public GameObject FingerTipObj;
+    
+    public bool IsCurrentlyPinching;
+    
+    public UnityEvent OnPinchStart = new UnityEvent();
+    public UnityEvent OnPinchEnd = new UnityEvent();
 
     // Start is called before the first frame update
     void Start()
     {
-        OnPinchLeft.AddListener(() => { Debug.Log("Pinching left."); });
-
-        OnPinchRight.AddListener(() => { Debug.Log("Pinching right."); });
-
-        OnUnpinchLeft.AddListener(() => { Debug.Log("Unpinching left."); });
-
-        OnUnpinchRight.AddListener(() => { Debug.Log("Unpinching right."); });
-
-
-        foreach (OVRHand hand in GetComponentsInChildren<OVRHand>())
-        {
-            switch (hand.HandType)
-            {
-                case OVRHand.Hand.HandLeft:
-                    _ovrLeftHand = hand;
-                    break;
-                case OVRHand.Hand.HandRight:
-                    _ovrRightHand = hand;
-                    break;
-            }
-        }
+        OnPinchStart.AddListener(() => { Debug.Log("Pinching left."); });
+        OnPinchEnd.AddListener(() => { Debug.Log("Unpinching left."); });
     }
 
     // Update is called once per frame
@@ -65,11 +30,8 @@ public class GestureDetector : MonoBehaviour
 
         try
         {
-            RightPointPos = RightHandSkeleton.Bones[(int) OVRSkeleton.BoneId.Hand_Index3].Transform.position;
-            LeftPointPos = LeftHandSkeleton.Bones[(int) OVRSkeleton.BoneId.Hand_Index3].Transform.position;
-
-            ToMove.transform.position = RightPointPos;
-            ToMove2.transform.position = LeftPointPos;
+            var tipPos = OVRSkeleton.Bones[(int) OVRSkeleton.BoneId.Hand_Index3].Transform.position;
+            FingerTipObj.transform.position = tipPos;
 
             Debug.Log("Yeah");
         }
@@ -78,30 +40,17 @@ public class GestureDetector : MonoBehaviour
             Debug.Log("Nope");
         }
         
-        bool isLeftHandPinching = _ovrLeftHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
+        bool isPinching = OVRHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
 
-        if (isLeftHandPinching && !IsCurrentlyPinchingLeft)
+        if (isPinching && !IsCurrentlyPinching)
         {
-            IsCurrentlyPinchingLeft = true;
-            OnPinchLeft.Invoke();
+            IsCurrentlyPinching = true;
+            OnPinchStart.Invoke();
         }
-        else if (!isLeftHandPinching && IsCurrentlyPinchingLeft)
+        else if (!isPinching && IsCurrentlyPinching)
         {
-            IsCurrentlyPinchingLeft = false;
-            OnUnpinchLeft.Invoke();
-        }
-
-        bool isRightHandPinching = _ovrRightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
-
-        if (isRightHandPinching && !IsCurrentlyPinchingRight)
-        {
-            IsCurrentlyPinchingRight = true;
-            OnPinchRight.Invoke();
-        }
-        else if (!isRightHandPinching && IsCurrentlyPinchingRight)
-        {
-            IsCurrentlyPinchingRight = false;
-            OnUnpinchRight.Invoke();
+            IsCurrentlyPinching = false;
+            OnPinchEnd.Invoke();
         }
     }
 }
