@@ -4,30 +4,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class GestureDetector : MonoBehaviour
+public class PinchDetector : MonoBehaviour
 {
-    
     public OVRHand OVRHand;
     public OVRSkeleton OVRSkeleton;
-    
-    public GameObject FingerTipObj;
-    
+    protected GameObject FingerTipObj;
+
     public bool IsCurrentlyPinching;
-    
+
     public UnityEvent OnPinchStart = new UnityEvent();
     public UnityEvent OnPinchEnd = new UnityEvent();
 
-    // Start is called before the first frame update
     void Start()
     {
-        OnPinchStart.AddListener(() => { Debug.Log("Pinching left."); });
-        OnPinchEnd.AddListener(() => { Debug.Log("Unpinching left."); });
+        CreateFingerTipObj();
+        AddListeners();
+    }
+
+    private void AddListeners()
+    {
+        OnPinchStart.AddListener(() => { Debug.Log("Pinch left start."); });
+        OnPinchEnd.AddListener(() => { Debug.Log("Pinch left stop."); });
+    }
+
+    private void CreateFingerTipObj()
+    {
+        FingerTipObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        FingerTipObj.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        UpdateFingerTipPos();
+        DetectPinch();
+    }
+    
+    private void UpdateFingerTipPos()
+    {
         try
         {
             var tipPos = OVRSkeleton.Bones[(int) OVRSkeleton.BoneId.Hand_Index3].Transform.position;
@@ -39,7 +53,10 @@ public class GestureDetector : MonoBehaviour
         {
             Debug.Log("Nope");
         }
-        
+    }
+
+    private void DetectPinch()
+    {
         bool isPinching = OVRHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
 
         if (isPinching && !IsCurrentlyPinching)
