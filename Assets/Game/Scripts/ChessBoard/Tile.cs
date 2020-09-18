@@ -10,13 +10,14 @@ namespace Game.Scripts.ChessBoard
 
         public void SetPosition(Position position)
         {
+            TargetPlaneHandler = gameObject.AddComponent<TargetPlaneHandler>();
             Position = position;
         }
 
         public void SetPiece(GameObject piece)
         {
-            piece.transform.parent = transform;
-            piece.transform.position += new Vector3(0, 2, 0);
+            piece.transform.SetParent(transform, false);
+            piece.transform.position += new Vector3(0, 4, 0);
         }
     }
 }

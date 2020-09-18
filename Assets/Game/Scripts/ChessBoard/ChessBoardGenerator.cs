@@ -38,8 +38,10 @@ public class ChessBoardAssets : Singleton<ChessBoardAssets>
     public Material TargetPlaneMaterial;
 
     // Start is called before the first frame update
-    void Awake()
+    private new void Awake()
     {
+        base.Awake();
+        
         // Tiles
         TileWhiteMaterial = ResourceLoader.Load<Material>("Chess/Tiles/Materials/TileMatBlack");
         TileBlackMaterial = ResourceLoader.Load<Material>("Chess/Tiles/Materials/TileMatWhite");
@@ -128,7 +130,7 @@ public class ChessBoardGenerator : MonoBehaviour
 
         Tile t = tile.AddComponent<Tile>();
         t.SetPosition(new Position(x, y));
-        
+
         return t;
     }
 
@@ -191,7 +193,10 @@ public class ChessBoardGenerator : MonoBehaviour
             piece.GetComponent<MeshRenderer>().material = ChessBoardAssets.Instance.PieceBlackMaterial;
         }
 
+        piece.AddComponent<BoxCollider>();
+
         parent.name += " " + type + " (" + x + ", " + y + ")";
+        parent.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
         return parent;
     }

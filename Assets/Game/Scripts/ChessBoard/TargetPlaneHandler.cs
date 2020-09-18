@@ -6,8 +6,7 @@ namespace Game.Scripts.ChessBoard
     public class TargetPlaneHandler : MonoBehaviour
     {
         public GameObject TargetPlane;
-
-  
+        
         public void Start()
         {
             TargetPlane = GameObject.CreatePrimitive(PrimitiveType.Plane);
