@@ -105,7 +105,7 @@ public class OVRLipSync : MonoBehaviour
     /// NOTE: Opaque typedef for lip-sync context is an unsigned int (uint)
 
     /// Current phoneme frame results
-    [System.Serializable]
+    [Serializable]
     public class Frame
     {
         public void CopyInput(Frame input)
@@ -208,7 +208,7 @@ public class OVRLipSync : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning(System.String.Format("OVRLipSync Awake: Only one instance of OVRPLipSync can exist in the scene."));
+            Debug.LogWarning(String.Format("OVRLipSync Awake: Only one instance of OVRPLipSync can exist in the scene."));
             return;
         }
 
@@ -218,7 +218,7 @@ public class OVRLipSync : MonoBehaviour
 
             if (sInitialized != Result.Success)
             {
-                Debug.LogWarning(System.String.Format
+                Debug.LogWarning(String.Format
                 ("OvrLipSync Awake: Failed to init Speech Rec library"));
             }
         }
@@ -260,7 +260,7 @@ public class OVRLipSync : MonoBehaviour
         // Get the current buffer size and number of buffers
         AudioSettings.GetDSPBufferSize(out bufferSize, out numbuf);
 
-        String str = System.String.Format
+        String str = String.Format
         ("OvrLipSync Awake: Queried SampleRate: {0:F0} BufferSize: {1:F0}", sampleRate, bufferSize);
         Debug.LogWarning(str);
 
@@ -270,7 +270,7 @@ public class OVRLipSync : MonoBehaviour
 
     public static Result Initialize(int sampleRate, int bufferSize)
     {
-        String str = System.String.Format
+        String str = String.Format
         ("OvrLipSync Awake: Queried SampleRate: {0:F0} BufferSize: {1:F0}", sampleRate, bufferSize);
         Debug.LogWarning(str);
 

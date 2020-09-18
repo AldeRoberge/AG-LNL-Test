@@ -13,7 +13,7 @@ public class OvrAvatarSkinnedMeshRenderComponent : OvrAvatarRenderComponent
     {
         this.surfaceSelfOccluding = surfaceSelfOccluding != null ? surfaceSelfOccluding :  Shader.Find("OvrAvatar/AvatarSurfaceShaderSelfOccluding");
         this.surface = surface != null ? surface : Shader.Find("OvrAvatar/AvatarSurfaceShader");
-        this.mesh = CreateSkinnedMesh(skinnedMeshRender.meshAssetID, skinnedMeshRender.visibilityMask, thirdPersonLayer, firstPersonLayer);
+        mesh = CreateSkinnedMesh(skinnedMeshRender.meshAssetID, skinnedMeshRender.visibilityMask, thirdPersonLayer, firstPersonLayer);
         bones = mesh.bones;
         UpdateMeshMaterial(skinnedMeshRender.visibilityMask, mesh);
     }
@@ -25,7 +25,7 @@ public class OvrAvatarSkinnedMeshRenderComponent : OvrAvatarRenderComponent
         UpdateSkinnedMesh(avatar, bones, localTransform, visibilityMask, renderPart);
 
         UpdateMeshMaterial(visibilityMask, mesh);
-        bool isActive = this.gameObject.activeSelf;
+        bool isActive = gameObject.activeSelf;
 
         if( mesh != null )
         {

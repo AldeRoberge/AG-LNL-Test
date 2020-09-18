@@ -6,25 +6,17 @@ namespace Game.Scripts.ChessBoard
     public class Tile : MonoBehaviour
     {
         public Position Position;
-
-        public void Start()
-        {
-            GameObject m = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            m.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
-            m.GetComponent<SphereCollider>().isTrigger = true;
-
-            BoxCollider b = GetComponent<BoxCollider>();
-            m.transform.position = b.center;
-        }
+        private TargetPlaneHandler TargetPlaneHandler;
 
         public void SetPosition(Position position)
         {
-            this.Position = position;
+            Position = position;
         }
 
-        public void SetPiece(GameObject createPieceAt)
+        public void SetPiece(GameObject piece)
         {
-            createPieceAt.transform.parent = this.transform;
+            piece.transform.parent = transform;
+            piece.transform.position += new Vector3(0, 2, 0);
         }
     }
 }

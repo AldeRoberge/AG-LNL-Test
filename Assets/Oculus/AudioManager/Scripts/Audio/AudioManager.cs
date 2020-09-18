@@ -23,7 +23,7 @@ public enum Fade
     Out
 }
 
-[System.Serializable]
+[Serializable]
 public class SoundGroup {
 	public SoundGroup( string name ) {
 		this.name = name;
@@ -351,7 +351,7 @@ public partial class AudioManager : MonoBehaviour {
 				"PlayClip",
 				BindingFlags.Static | BindingFlags.Public,
 				null,
-				new System.Type[] { typeof(AudioClip) },
+				new Type[] { typeof(AudioClip) },
 				null );
 			method.Invoke( null, new object[] { clip } );
 		}
@@ -381,7 +381,7 @@ public partial class AudioManager : MonoBehaviour {
 				"IsClipPlaying",
 				BindingFlags.Static | BindingFlags.Public,
 				null,
-				new System.Type[] { typeof(AudioClip) },
+				new Type[] { typeof(AudioClip) },
 				null );
 			return Convert.ToBoolean( method.Invoke( null, new object[] { clip } ) );
 		}
@@ -418,7 +418,7 @@ public partial class AudioManager : MonoBehaviour {
 				"StopClip",
 				BindingFlags.Static | BindingFlags.Public,
 				null,
-				new System.Type[] { typeof(AudioClip) },
+				new Type[] { typeof(AudioClip) },
 				null);
 			method.Invoke(null, new object[] { clip });
 		}

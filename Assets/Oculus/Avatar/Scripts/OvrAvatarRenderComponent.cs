@@ -29,7 +29,7 @@ public class OvrAvatarRenderComponent : MonoBehaviour {
         {
             bool active = avatar.ShowFirstPerson && (mask & ovrAvatarVisibilityFlags.FirstPerson) != 0;
             active |= avatar.ShowThirdPerson && (mask & ovrAvatarVisibilityFlags.ThirdPerson) != 0;
-            this.gameObject.SetActive(active);
+            gameObject.SetActive(active);
             mesh.enabled = active;
         }
     }
@@ -45,11 +45,11 @@ public class OvrAvatarRenderComponent : MonoBehaviour {
         }
         if ((visibilityMask & ovrAvatarVisibilityFlags.ThirdPerson) != 0)
         {
-            this.gameObject.layer = thirdPersonLayer;
+            gameObject.layer = thirdPersonLayer;
         }
         else
         {
-            this.gameObject.layer = firstPersonLayer;
+            gameObject.layer = firstPersonLayer;
         }
         SkinnedMeshRenderer renderer = meshAsset.CreateSkinnedMeshRendererOnObject(gameObject);
 #if UNITY_ANDROID

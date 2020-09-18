@@ -359,6 +359,6 @@ public class ONSPAudioSource : MonoBehaviour
         }
     }
     
-    [System.Runtime.InteropServices.DllImport("AudioPluginOculusSpatializer")]
+    [DllImport("AudioPluginOculusSpatializer")]
     private static extern int OSP_SetGlobalVoiceLimit(int VoiceLimit);
 }

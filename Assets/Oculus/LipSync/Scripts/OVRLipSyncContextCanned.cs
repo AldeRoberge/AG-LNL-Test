@@ -45,7 +45,7 @@ public class OVRLipSyncContextCanned : OVRLipSyncContextBase
         if (audioSource.isPlaying && currentSequence != null)
         {
             OVRLipSync.Frame currentFrame = currentSequence.GetFrameAtTime(audioSource.time);
-            this.Frame.CopyInput(currentFrame);
+            Frame.CopyInput(currentFrame);
         }
     }
 }

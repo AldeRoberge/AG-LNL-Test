@@ -102,7 +102,7 @@ public class SocialPlatformManager : MonoBehaviour
             localAvatar.VoiceAmplitude = Mathf.Clamp(voiceCurrent * VOIP_SCALE, 0f, 1f);
         }
 
-        Oculus.Platform.Request.RunCallbacks();
+        Request.RunCallbacks();
     }
 
     #region Initialization and Shutdown
@@ -117,8 +117,8 @@ public class SocialPlatformManager : MonoBehaviour
         floorMesh = roomFloor.GetComponent<MeshRenderer>();
 
         // Set up the local player
-        localTrackingSpace = this.transform.Find("OVRCameraRig/TrackingSpace").gameObject;
-        localPlayerHead = this.transform.Find("OVRCameraRig/TrackingSpace/CenterEyeAnchor").gameObject;
+        localTrackingSpace = transform.Find("OVRCameraRig/TrackingSpace").gameObject;
+        localPlayerHead = transform.Find("OVRCameraRig/TrackingSpace/CenterEyeAnchor").gameObject;
 
         // make sure only one instance of this manager ever exists
         if (s_instance != null)
@@ -148,7 +148,7 @@ public class SocialPlatformManager : MonoBehaviour
         }
 
         LaunchDetails launchDetails = ApplicationLifecycle.GetLaunchDetails();
-        SocialPlatformManager.LogOutput("App launched with LaunchType " + launchDetails.LaunchType);
+        LogOutput("App launched with LaunchType " + launchDetails.LaunchType);
 
         // First thing we should do is perform an entitlement check to make sure
         // we successfully connected to the Oculus Platform Service.
@@ -185,7 +185,7 @@ public class SocialPlatformManager : MonoBehaviour
 
         localAvatar = Instantiate(localAvatarPrefab);
         localAvatar.CanOwnMicrophone = false;
-        localTrackingSpace = this.transform.Find("OVRCameraRig/TrackingSpace").gameObject;
+        localTrackingSpace = transform.Find("OVRCameraRig/TrackingSpace").gameObject;
 
         localAvatar.transform.SetParent(localTrackingSpace.transform, false);
         localAvatar.transform.localPosition = new Vector3(0, 0, 0);
@@ -215,27 +215,27 @@ public class SocialPlatformManager : MonoBehaviour
         {
             case 0:
                 rotation.eulerAngles = START_ROTATION_ONE;
-                this.transform.localPosition = START_POSITION_ONE;
-                this.transform.localRotation = rotation;
+                transform.localPosition = START_POSITION_ONE;
+                transform.localRotation = rotation;
                 break;
 
             case 1:
                 rotation.eulerAngles = START_ROTATION_TWO;
-                this.transform.localPosition = START_POSITION_TWO;
-                this.transform.localRotation = rotation;
+                transform.localPosition = START_POSITION_TWO;
+                transform.localRotation = rotation;
                 break;
 
             case 2:
                 rotation.eulerAngles = START_ROTATION_THREE;
-                this.transform.localPosition = START_POSITION_THREE;
-                this.transform.localRotation = rotation;
+                transform.localPosition = START_POSITION_THREE;
+                transform.localRotation = rotation;
                 break;
 
             case 3:
             default:
                 rotation.eulerAngles = START_ROTATION_FOUR;
-                this.transform.localPosition = START_POSITION_FOUR;
-                this.transform.localRotation = rotation;
+                transform.localPosition = START_POSITION_FOUR;
+                transform.localRotation = rotation;
                 break;
         }
 
@@ -245,7 +245,7 @@ public class SocialPlatformManager : MonoBehaviour
         // join that room.  If not, try to find a friend's room to join
         if (!roomManager.CheckForInvite())
         {
-            SocialPlatformManager.LogOutput("No invite on launch, looking for a friend to join.");
+            LogOutput("No invite on launch, looking for a friend to join.");
             Users.GetLoggedInUserFriendsAndRooms()
                 .OnComplete(GetLoggedInUserFriendsAndRoomsCallback);
         }
@@ -268,12 +268,12 @@ public class SocialPlatformManager : MonoBehaviour
             if (el.RoomOptional.Joinability != RoomJoinability.CanJoin) continue;
             if (el.RoomOptional.JoinPolicy == RoomJoinPolicy.None) continue;
 
-            SocialPlatformManager.LogOutput("Trying to join room " + el.RoomOptional.ID + ", friend " + el.User.OculusID);
+            LogOutput("Trying to join room " + el.RoomOptional.ID + ", friend " + el.User.OculusID);
             roomManager.JoinExistingRoom(el.RoomOptional.ID);
             return;
         }
 
-        SocialPlatformManager.LogOutput("No friend to join. Creating my own room.");
+        LogOutput("No friend to join. Creating my own room.");
         // didn't find any open rooms, start a new room
         roomManager.CreateRoom();
         TransitionToState(State.CREATING_A_ROOM);
@@ -562,7 +562,7 @@ public class SocialPlatformManager : MonoBehaviour
     }
 
     [MonoPInvokeCallback(typeof(Oculus.Platform.CAPI.FilterCallback))]
-    public static void MicFilter(short[] pcmData, System.UIntPtr pcmDataLength, int frequency, int numChannels)
+    public static void MicFilter(short[] pcmData, UIntPtr pcmDataLength, int frequency, int numChannels)
     {
         s_instance.UpdateVoiceData(pcmData, numChannels);
     }

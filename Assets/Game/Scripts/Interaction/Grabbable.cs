@@ -18,7 +18,7 @@ namespace DefaultNamespace
             GrabbingSphere.name = "Grabbing Sphere";
 
             GrabbingSphere.GetComponent<SphereCollider>().isTrigger = true;
-            GrabbingSphere.transform.localScale = new Vector3(1f, 1f, 1f);
+            GrabbingSphere.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             GrabbingSphere.transform.SetParent(transform, false);
             
             SetGrabbingSphereOnTop();
@@ -51,7 +51,7 @@ namespace DefaultNamespace
         {
             if (GrabbedBy != null)
             {
-                this.gameObject.transform.position = GrabbedBy.transform.position;
+                gameObject.transform.position = GrabbedBy.transform.position;
             }
         }
 

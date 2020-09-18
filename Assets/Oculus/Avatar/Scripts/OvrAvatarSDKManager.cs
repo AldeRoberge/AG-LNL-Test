@@ -66,7 +66,7 @@ public class OvrAvatarSDKManager : MonoBehaviour
         {
             if (_instance == null)
             {
-                _instance = GameObject.FindObjectOfType<OvrAvatarSDKManager>();
+                _instance = FindObjectOfType<OvrAvatarSDKManager>();
                 if (_instance == null)
                 {
                     GameObject manager = new GameObject("OvrAvatarSDKManager");
@@ -357,7 +357,7 @@ public class OvrAvatarSDKManager : MonoBehaviour
 
     public string GetAppId()
     {
-        return UnityEngine.Application.platform == RuntimePlatform.Android ?
+        return Application.platform == RuntimePlatform.Android ?
                 OvrAvatarSettings.MobileAppID : OvrAvatarSettings.AppID;
     }
 

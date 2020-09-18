@@ -80,7 +80,7 @@ public class RoomManager
              .OnComplete(CreateAndJoinPrivateRoomCallback);
     }
 
-    void CreateAndJoinPrivateRoomCallback(Message<Oculus.Platform.Models.Room> msg)
+    void CreateAndJoinPrivateRoomCallback(Message<Room> msg)
     {
         if (msg.IsError)
         {
@@ -122,7 +122,7 @@ public class RoomManager
         Rooms.Join(roomID, true).OnComplete(JoinRoomCallback);
     }
 
-    void JoinRoomCallback(Message<Oculus.Platform.Models.Room> msg)
+    void JoinRoomCallback(Message<Room> msg)
     {
         if (msg.IsError)
         {
@@ -142,7 +142,7 @@ public class RoomManager
 
     #region Room Updates
 
-    void RoomUpdateCallback(Message<Oculus.Platform.Models.Room> msg)
+    void RoomUpdateCallback(Message<Room> msg)
     {
         if (msg.IsError)
         {
@@ -175,7 +175,7 @@ public class RoomManager
 
     #region Process Room Data
 
-    void ProcessRoomData(Message<Oculus.Platform.Models.Room> msg)
+    void ProcessRoomData(Message<Room> msg)
     {
         if (msg.Data.OwnerOptional != null && msg.Data.OwnerOptional.ID == SocialPlatformManager.MyID)
         {

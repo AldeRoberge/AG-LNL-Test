@@ -186,7 +186,7 @@ public class OVRLipSyncContext : OVRLipSyncContextBase
         {
             HandleKeyboard();
         }
-        laughterScore = this.Frame.laughterScore;
+        laughterScore = Frame.laughterScore;
         DebugShowVisemesAndLaughter();
     }
 
@@ -233,7 +233,7 @@ public class OVRLipSyncContext : OVRLipSyncContextBase
             {
                 return;
             }
-            var frame = this.Frame;
+            var frame = Frame;
             OVRLipSync.ProcessFrame(Context, data, frame, channels == 2);
         }
     }
@@ -252,7 +252,7 @@ public class OVRLipSyncContext : OVRLipSyncContextBase
             {
                 return;
             }
-            var frame = this.Frame;
+            var frame = Frame;
             OVRLipSync.ProcessFrame(Context, data, frame, channels == 2);
         }
     }
@@ -300,19 +300,19 @@ public class OVRLipSyncContext : OVRLipSyncContextBase
             if (showLaughter)
             {
                 seq += "Laughter:";
-                int count = (int)(50.0f * this.Frame.laughterScore);
+                int count = (int)(50.0f * Frame.laughterScore);
                 for (int c = 0; c < count; c++)
                     seq += "*";
                 seq += "\n";
             }
             if (showVisemes)
             {
-                for (int i = 0; i < this.Frame.Visemes.Length; i++)
+                for (int i = 0; i < Frame.Visemes.Length; i++)
                 {
                     seq += ((OVRLipSync.Viseme)i).ToString();
                     seq += ":";
 
-                    int count = (int)(50.0f * this.Frame.Visemes[i]);
+                    int count = (int)(50.0f * Frame.Visemes[i]);
                     for (int c = 0; c < count; c++)
                         seq += "*";
 

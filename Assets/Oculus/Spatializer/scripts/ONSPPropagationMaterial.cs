@@ -154,7 +154,7 @@ public sealed class ONSPPropagationMaterial : MonoBehaviour
 		get { return preset_; }
 		set
 		{
-			this.SetPreset( value );
+			SetPreset( value );
 			preset_ = value;
 		}
 	}

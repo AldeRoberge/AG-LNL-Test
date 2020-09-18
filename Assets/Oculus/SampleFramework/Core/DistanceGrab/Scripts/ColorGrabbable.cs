@@ -3,7 +3,7 @@
 Copyright (c) Facebook Technologies, LLC and its affiliates. All rights reserved.  
 
 See SampleFramework license.txt for license terms.  Unless required by applicable law 
-or agreed to in writing, the sample code is provided ìAS ISî WITHOUT WARRANTIES OR 
+or agreed to in writing, the sample code is provided ‚ÄúAS IS‚Äù WITHOUT WARRANTIES OR 
 CONDITIONS OF ANY KIND, either express or implied.  See the license for specific 
 language governing permissions and limitations under the license.
 
@@ -58,7 +58,7 @@ namespace OculusSampleFramework
             if (m_grabPoints.Length == 0)
             {
                 // Get the collider from the grabbable
-                Collider collider = this.GetComponent<Collider>();
+                Collider collider = GetComponent<Collider>();
                 if (collider == null)
                 {
 				    throw new System.ArgumentException("Grabbables cannot have zero grab points and no collider -- please add a grab point or collider.");
@@ -70,11 +70,11 @@ namespace OculusSampleFramework
                 // Grab points are doing double-duty as a way to identify submeshes that should be colored.
                 // If unspecified, just color self.
                 m_meshRenderers = new MeshRenderer[1];
-                m_meshRenderers[0] = this.GetComponent<MeshRenderer>();
+                m_meshRenderers[0] = GetComponent<MeshRenderer>();
             }
             else
             {
-                m_meshRenderers = this.GetComponentsInChildren<MeshRenderer>();
+                m_meshRenderers = GetComponentsInChildren<MeshRenderer>();
             }
             m_color = new Color(
                 Random.Range(0.1f, 0.95f),

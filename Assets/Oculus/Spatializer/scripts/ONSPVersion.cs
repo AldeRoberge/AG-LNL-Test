@@ -41,7 +41,7 @@ public class ONSPVersion : MonoBehaviour
 
         ONSP_GetVersion(ref major, ref minor, ref patch);
 
-        String version = System.String.Format
+        String version = String.Format
         ("ONSP Version: {0:F0}.{1:F0}.{2:F0}", major, minor, patch);
         
         Debug.Log(version);

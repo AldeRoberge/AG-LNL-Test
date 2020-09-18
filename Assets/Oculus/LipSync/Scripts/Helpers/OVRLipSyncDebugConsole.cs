@@ -111,7 +111,7 @@ public class OVRLipSyncDebugConsole : MonoBehaviour
     /// <param name="message">Message.</param>
     public static void Log(string message)
     {
-        OVRLipSyncDebugConsole.instance.AddMessage(message, Color.white);
+        instance.AddMessage(message, Color.white);
     }
 
     /// <summary>
@@ -121,7 +121,7 @@ public class OVRLipSyncDebugConsole : MonoBehaviour
     /// <param name="color">Color.</param>
     public static void Log(string message, Color color)
     {
-        OVRLipSyncDebugConsole.instance.AddMessage(message, color);
+        instance.AddMessage(message, color);
     }
 
     /// <summary>
@@ -129,7 +129,7 @@ public class OVRLipSyncDebugConsole : MonoBehaviour
     /// </summary>
     public static void Clear()
     {
-        OVRLipSyncDebugConsole.instance.ClearMessages();
+        instance.ClearMessages();
     }
 
     /// <summary>
@@ -138,7 +138,7 @@ public class OVRLipSyncDebugConsole : MonoBehaviour
     /// <param name="timeToClear">Time to clear.</param>
     public static void ClearTimeout(float timeToClear)
     {
-        OVRLipSyncDebugConsole.instance.SetClearTimeout(timeToClear);
+        instance.SetClearTimeout(timeToClear);
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

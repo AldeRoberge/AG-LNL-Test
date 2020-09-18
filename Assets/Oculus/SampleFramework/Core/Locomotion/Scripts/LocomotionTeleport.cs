@@ -362,7 +362,7 @@ public class LocomotionTeleport : MonoBehaviour
 	protected void CreateNewTeleportDestination()
 	{
 		TeleportDestinationPrefab.gameObject.SetActive(false); // ensure the prefab isn't active in order to delay event handler setup until after it has been configured with a reference to this object.
-		TeleportDestination td = GameObject.Instantiate(TeleportDestinationPrefab);
+		TeleportDestination td = Instantiate(TeleportDestinationPrefab);
 		td.LocomotionTeleport = this;
 		td.gameObject.layer = TeleportDestinationLayer;
 		_teleportDestination = td;
@@ -385,7 +385,7 @@ public class LocomotionTeleport : MonoBehaviour
 		{
 			CreateNewTeleportDestination();
 		}
-		GameObject.Destroy(oldDestination.gameObject);	
+		Destroy(oldDestination.gameObject);	
 	}
 
 	/// <summary>

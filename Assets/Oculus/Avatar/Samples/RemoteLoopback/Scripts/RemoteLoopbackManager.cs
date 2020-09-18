@@ -17,7 +17,7 @@ public class RemoteLoopbackManager : MonoBehaviour
     public OvrAvatar LocalAvatar;
     public OvrAvatar LoopbackAvatar;
 
-    [System.Serializable]
+    [Serializable]
     public class SimulatedLatencySettings
     {
         [Range(0.0f, 0.5f)]

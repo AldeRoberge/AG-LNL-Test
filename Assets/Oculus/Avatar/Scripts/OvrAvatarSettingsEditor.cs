@@ -13,11 +13,11 @@ public class OvrAvatarSettingsEditor : Editor {
     GUIContent mobileAppIDLabel = new GUIContent("Oculus Go/Quest or Gear VR [?]", 
       "This AppID will be used when building to the Android target");
 
-    [UnityEditor.MenuItem("Oculus/Avatars/Edit Settings")]
+    [MenuItem("Oculus/Avatars/Edit Settings")]
     public static void Edit()
     {
         var settings = OvrAvatarSettings.Instance;
-        UnityEditor.Selection.activeObject = settings;
+        Selection.activeObject = settings;
         CAPI.SendEvent("edit_settings");
     }
 
@@ -63,9 +63,9 @@ public class OvrAvatarSettingsEditor : Editor {
     {
         EditorGUILayout.BeginVertical();
         OvrAvatarSettings.AppID =
-            OvrAvatarSettingsEditor.MakeTextBox(appIDLabel, OvrAvatarSettings.AppID);
+            MakeTextBox(appIDLabel, OvrAvatarSettings.AppID);
         OvrAvatarSettings.MobileAppID =
-            OvrAvatarSettingsEditor.MakeTextBox(mobileAppIDLabel, OvrAvatarSettings.MobileAppID);
+            MakeTextBox(mobileAppIDLabel, OvrAvatarSettings.MobileAppID);
         EditorGUILayout.EndVertical();
     }
 }

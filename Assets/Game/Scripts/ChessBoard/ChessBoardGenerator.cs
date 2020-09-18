@@ -5,6 +5,8 @@ using System.Data;
 using ChessEngine.Engine;
 using DefaultNamespace;
 using Game.Scripts.ChessBoard;
+using Game.Scripts.ChessBoard.Models;
+using Game.Scripts.Utils;
 using ResourcesLoader;
 using UnityEngine;
 using UnityEngine.Events;
@@ -16,7 +18,7 @@ public static class ChessBoardConstants
     public const int Size = 8;
 }
 
-public class ChessBoardAssets : MonoBehaviour
+public class ChessBoardAssets : Singleton<ChessBoardAssets>
 {
     public GameObject TilePrefab;
 
@@ -33,7 +35,7 @@ public class ChessBoardAssets : MonoBehaviour
     public Material PieceWhiteMaterial;
     public Material PieceBlackMaterial;
 
-    public UnityEvent OnLoadComplete = new UnityEvent();
+    public Material TargetPlaneMaterial;
 
     // Start is called before the first frame update
     void Awake()
@@ -55,27 +57,26 @@ public class ChessBoardAssets : MonoBehaviour
         KnightPrefab = ResourceLoader.Load<GameObject>("Chess/Pieces/Prefabs/Knight");
         PawnData = ResourceLoader.Load<GameObject>("Chess/Pieces/Prefabs/Pawn");
 
-
-        OnLoadComplete.Invoke();
+        TargetPlaneMaterial = ResourceLoader.Load<Material>("Chess/Interaction/TargetPlane/Green");
     }
 }
 
 
 public class ChessBoardGenerator : MonoBehaviour
 {
-    private ChessBoardAssets _chessBoardAssets;
-
     private Engine engine;
 
     public void Start()
     {
         engine = new Engine("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-
-        _chessBoardAssets = gameObject.AddComponent<ChessBoardAssets>();
-        GenerateGrid();
+        Generate();
     }
 
-    private void GenerateGrid()
+
+    /// <summary>
+    /// Generate the chess board (tiles and pieces).
+    /// </summary>
+    private void Generate()
     {
         GameObject board = new GameObject("Board");
         board.transform.parent = transform;
@@ -91,7 +92,7 @@ public class ChessBoardGenerator : MonoBehaviour
             for (int y = 0; y < ChessBoardConstants.Size; y++)
             {
                 Tile tile = CreateTileAt(x, y, tilesParent);
-                
+
                 GameObject piece = CreatePieceAt(x, y);
 
                 if (piece != null)
@@ -114,18 +115,20 @@ public class ChessBoardGenerator : MonoBehaviour
     /// </summary>
     private Tile CreateTileAt(int x, int y, GameObject parent)
     {
-        GameObject tilePrefab = _chessBoardAssets.TilePrefab;
+        GameObject tilePrefab = ChessBoardAssets.Instance.TilePrefab;
 
         GameObject tile = Instantiate(tilePrefab, new Vector3(x * tileOffset, 0, y * tileOffset), Quaternion.identity);
         tile.name = "Tile (" + x + "," + y + ")";
         tile.transform.parent = parent.transform;
 
         if ((x + y) % 2 == 1)
-            tile.GetComponent<MeshRenderer>().material = _chessBoardAssets.TileBlackMaterial;
+            tile.GetComponent<MeshRenderer>().material = ChessBoardAssets.Instance.TileBlackMaterial;
         else
-            tile.GetComponent<MeshRenderer>().material = _chessBoardAssets.TileWhiteMaterial;
+            tile.GetComponent<MeshRenderer>().material = ChessBoardAssets.Instance.TileWhiteMaterial;
 
         Tile t = tile.AddComponent<Tile>();
+        t.SetPosition(new Position(x, y));
+        
         return t;
     }
 
@@ -142,22 +145,22 @@ public class ChessBoardGenerator : MonoBehaviour
         switch (type)
         {
             case ChessPieceType.Bishop:
-                piecePrefab = _chessBoardAssets.BishopPrefab;
+                piecePrefab = ChessBoardAssets.Instance.BishopPrefab;
                 break;
             case ChessPieceType.King:
-                piecePrefab = _chessBoardAssets.KingPrefab;
+                piecePrefab = ChessBoardAssets.Instance.KingPrefab;
                 break;
             case ChessPieceType.Knight:
-                piecePrefab = _chessBoardAssets.KnightPrefab;
+                piecePrefab = ChessBoardAssets.Instance.KnightPrefab;
                 break;
             case ChessPieceType.Pawn:
-                piecePrefab = _chessBoardAssets.PawnData;
+                piecePrefab = ChessBoardAssets.Instance.PawnData;
                 break;
             case ChessPieceType.Queen:
-                piecePrefab = _chessBoardAssets.QueenPrefab;
+                piecePrefab = ChessBoardAssets.Instance.QueenPrefab;
                 break;
             case ChessPieceType.Rook:
-                piecePrefab = _chessBoardAssets.RookPrefab;
+                piecePrefab = ChessBoardAssets.Instance.RookPrefab;
                 break;
             case ChessPieceType.None:
                 break;
@@ -168,33 +171,28 @@ public class ChessBoardGenerator : MonoBehaviour
             return null;
 
         // Create parent
-        GameObject parentPiece = new GameObject();
+        GameObject parent = new GameObject();
 
-        GameObject piece = Instantiate(piecePrefab);
+        GameObject piece = Instantiate(piecePrefab, parent.transform, true);
         piece.name = "Piece";
+        piece.transform.position = Vector3.zero;
 
-        // Set name and color
+        // Set parent name and piece color
         var color = engine.GetPieceColorAt((byte) x, (byte) y);
 
         if (color == ChessPieceColor.White)
         {
-            parentPiece.name = "White";
-            piece.GetComponent<MeshRenderer>().material = _chessBoardAssets.PieceWhiteMaterial;
+            parent.name = "White";
+            piece.GetComponent<MeshRenderer>().material = ChessBoardAssets.Instance.PieceWhiteMaterial;
         }
         else
         {
-            parentPiece.name = "Black";
-            piece.GetComponent<MeshRenderer>().material = _chessBoardAssets.PieceBlackMaterial;
+            parent.name = "Black";
+            piece.GetComponent<MeshRenderer>().material = ChessBoardAssets.Instance.PieceBlackMaterial;
         }
 
-        parentPiece.name += " " + type + " (" + x + ", " + y + ")";
+        parent.name += " " + type + " (" + x + ", " + y + ")";
 
-        // Make it grabbable
-        Grabbable g = parentPiece.AddComponent<Grabbable>();
-        g.gameObject.AddComponent<BoxCollider>();
-        piece.transform.parent = g.GrabbingSphere.transform;
-        g.SetGrabbableObject(piece);
-
-        return parentPiece;
+        return parent;
     }
 }

@@ -12,7 +12,7 @@ using UnityEditor;
 using UnityEngine.Events;
 #endif
 
-[System.Serializable]
+[Serializable]
 public class AvatarLayer
 {
     public int layerIndex;
@@ -33,7 +33,7 @@ public class AvatarLayerPropertyDrawer : PropertyDrawer
 }
 #endif
 
-[System.Serializable]
+[Serializable]
 public class PacketRecordSettings
 {
     internal bool RecordingFrames = false;
@@ -609,7 +609,7 @@ public class OvrAvatar : MonoBehaviour
 
         OvrAvatarSDKManager.AvatarSpecRequestParams avatarSpecRequest = new OvrAvatarSDKManager.AvatarSpecRequestParams(
             oculusUserIDInternal,
-            this.AvatarSpecificationCallback,
+            AvatarSpecificationCallback,
             CombineMeshes,
             LevelOfDetail,
             USE_MOBILE_TEXTURE_FORMAT,
@@ -1136,7 +1136,7 @@ public class OvrAvatar : MonoBehaviour
 
     void UpdateExpressive()
     {
-        ovrAvatarTransform baseTransform = OvrAvatar.CreateOvrAvatarTransform(transform.position, transform.rotation);
+        ovrAvatarTransform baseTransform = CreateOvrAvatarTransform(transform.position, transform.rotation);
         CAPI.ovrAvatar_UpdateWorldTransform(sdkAvatar, baseTransform);
 
         UpdateFacewave();

@@ -118,7 +118,7 @@ public class TeleportInputHandlerTouch : TeleportInputHandlerHMD
 	{
 		if (!isActiveAndEnabled)
 		{
-			return global::LocomotionTeleport.TeleportIntentions.None;
+			return LocomotionTeleport.TeleportIntentions.None;
 		}
 
 		// If capacitive touch isn't being used, the base implementation will do the work.

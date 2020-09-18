@@ -23,11 +23,11 @@ public sealed class ONSPSettings : ScriptableObject
                 // Use a dummy object with defaults for the getters so we don't have a null pointer exception
                 if (instance == null)
                 {
-                    instance = ScriptableObject.CreateInstance<ONSPSettings>();
+                    instance = CreateInstance<ONSPSettings>();
 
 #if UNITY_EDITOR
                     // Only in the editor should we save it to disk
-                    string properPath = System.IO.Path.Combine(UnityEngine.Application.dataPath, "Resources");
+                    string properPath = System.IO.Path.Combine(Application.dataPath, "Resources");
                     if (!System.IO.Directory.Exists(properPath))
                     {
                         UnityEditor.AssetDatabase.CreateFolder("Assets", "Resources");

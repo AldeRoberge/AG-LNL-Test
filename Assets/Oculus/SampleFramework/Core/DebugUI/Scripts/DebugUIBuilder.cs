@@ -101,7 +101,7 @@ public class DebugUIBuilder : MonoBehaviour
 
     if (uiHelpersToInstantiate)
     {
-      GameObject.Instantiate(uiHelpersToInstantiate);
+      Instantiate(uiHelpersToInstantiate);
     }
 
     lp = FindObjectOfType<LaserPointer>();
@@ -224,7 +224,7 @@ public class DebugUIBuilder : MonoBehaviour
 
   public RectTransform AddButton(string label, OnClick handler, int targetCanvas = 0)
   {
-    RectTransform buttonRT = GameObject.Instantiate(buttonPrefab).GetComponent<RectTransform>();
+    RectTransform buttonRT = Instantiate(buttonPrefab).GetComponent<RectTransform>();
     Button button = buttonRT.GetComponentInChildren<Button>();
     button.onClick.AddListener(delegate { handler(); });
     ((Text)(buttonRT.GetComponentsInChildren(typeof(Text), true)[0])).text = label;
@@ -234,7 +234,7 @@ public class DebugUIBuilder : MonoBehaviour
 
   public RectTransform AddLabel(string label, int targetCanvas = 0)
   {
-    RectTransform rt = GameObject.Instantiate(labelPrefab).GetComponent<RectTransform>();
+    RectTransform rt = Instantiate(labelPrefab).GetComponent<RectTransform>();
     rt.GetComponent<Text>().text = label;
     AddRect(rt, targetCanvas);
     return rt;
@@ -242,7 +242,7 @@ public class DebugUIBuilder : MonoBehaviour
 
   public RectTransform AddSlider(string label, float min, float max, OnSlider onValueChanged, bool wholeNumbersOnly = false, int targetCanvas = 0)
   {
-    RectTransform rt = (RectTransform)GameObject.Instantiate(sliderPrefab);
+    RectTransform rt = (RectTransform)Instantiate(sliderPrefab);
     Slider s = rt.GetComponentInChildren<Slider>();
     s.minValue = min;
     s.maxValue = max;
@@ -254,14 +254,14 @@ public class DebugUIBuilder : MonoBehaviour
 
   public RectTransform AddDivider(int targetCanvas = 0)
   {
-    RectTransform rt = (RectTransform)GameObject.Instantiate(dividerPrefab);
+    RectTransform rt = (RectTransform)Instantiate(dividerPrefab);
     AddRect(rt, targetCanvas);
     return rt;
   }
 
   public RectTransform AddToggle(string label, OnToggleValueChange onValueChanged, int targetCanvas = 0)
   {
-    RectTransform rt = (RectTransform)GameObject.Instantiate(togglePrefab);
+    RectTransform rt = (RectTransform)Instantiate(togglePrefab);
     AddRect(rt, targetCanvas);
     Text buttonText = rt.GetComponentInChildren<Text>();
     buttonText.text = label;
@@ -272,7 +272,7 @@ public class DebugUIBuilder : MonoBehaviour
 
   public RectTransform AddToggle(string label, OnToggleValueChange onValueChanged, bool defaultValue, int targetCanvas = 0)
   {
-    RectTransform rt = (RectTransform)GameObject.Instantiate(togglePrefab);
+    RectTransform rt = (RectTransform)Instantiate(togglePrefab);
     AddRect(rt, targetCanvas);
     Text buttonText = rt.GetComponentInChildren<Text>();
     buttonText.text = label;
@@ -284,7 +284,7 @@ public class DebugUIBuilder : MonoBehaviour
 
   public RectTransform AddRadio(string label, string group, OnToggleValueChange handler, int targetCanvas = 0)
   {
-    RectTransform rt = (RectTransform)GameObject.Instantiate(radioPrefab);
+    RectTransform rt = (RectTransform)Instantiate(radioPrefab);
     AddRect(rt, targetCanvas);
     Text buttonText = rt.GetComponentInChildren<Text>();
     buttonText.text = label;

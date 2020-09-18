@@ -37,7 +37,7 @@ namespace OculusSampleFramework
 						// remove extras, if any
 						for (int i = 1; i < instances.Length; i++)
 						{
-							GameObject.Destroy(instances[i].gameObject);
+							Destroy(instances[i].gameObject);
 						}
 					}
 				}

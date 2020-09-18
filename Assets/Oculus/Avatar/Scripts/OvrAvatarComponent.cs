@@ -65,7 +65,7 @@ public class OvrAvatarComponent : MonoBehaviour
     {
         bool active = avatar.ShowFirstPerson && (mask & ovrAvatarVisibilityFlags.FirstPerson) != 0;
         active |= avatar.ShowThirdPerson && (mask & ovrAvatarVisibilityFlags.ThirdPerson) != 0;
-        this.gameObject.SetActive(active);
+        gameObject.SetActive(active);
     }
 
     public void UpdateAvatarMaterial(Material mat, ovrAvatarMaterialState matState)

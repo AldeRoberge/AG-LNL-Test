@@ -71,7 +71,7 @@ public partial class AudioManager : MonoBehaviour {
 		}
 
 		// find the audio listener for playing regular 2D sounds
-		AudioListener audioListenerObject = GameObject.FindObjectOfType<AudioListener>() as AudioListener;
+		AudioListener audioListenerObject = FindObjectOfType<AudioListener>() as AudioListener;
 		if ( audioListenerObject == null ) {
 			Debug.LogError( "[AudioManager] Missing AudioListener object!  Add one to the scene." );
 		} else {
@@ -488,7 +488,7 @@ public partial class AudioManager : MonoBehaviour {
 		audioSource.mute = false;
 		audioSource.minDistance = soundFX.falloffDistance.x;
 		audioSource.maxDistance = soundFX.falloffDistance.y;
-		audioSource.outputAudioMixerGroup = soundFX.GetMixerGroup( AudioManager.EmitterGroup );
+		audioSource.outputAudioMixerGroup = soundFX.GetMixerGroup( EmitterGroup );
 		// set the play time so we can check when sounds are done
 		emitter.endPlayTime = Time.time + clip.length + delay;
 		// cache the default volume for fading
@@ -597,7 +597,7 @@ public partial class AudioManager : MonoBehaviour {
 		audioSource.mute = false;
 		audioSource.minDistance = theAudioManager.audioMinFallOffDistance;
 		audioSource.maxDistance = theAudioManager.audioMaxFallOffDistance;
-		audioSource.outputAudioMixerGroup = AudioManager.EmitterGroup;
+		audioSource.outputAudioMixerGroup = EmitterGroup;
 		// set the play time so we can check when sounds are done
 		emitter.endPlayTime = Time.time + clip.length + delay;
 		// cache the default volume for fading
