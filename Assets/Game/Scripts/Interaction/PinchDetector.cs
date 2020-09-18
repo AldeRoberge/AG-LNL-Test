@@ -8,7 +8,7 @@ public class PinchDetector : MonoBehaviour
 {
     public OVRHand OVRHand;
     public OVRSkeleton OVRSkeleton;
-    protected GameObject FingerTipObj;
+    public GameObject FingerTipObj;
 
     public bool IsCurrentlyPinching;
 
@@ -23,8 +23,8 @@ public class PinchDetector : MonoBehaviour
 
     private void AddListeners()
     {
-        OnPinchStart.AddListener(() => { Debug.Log("Pinch left start."); });
-        OnPinchEnd.AddListener(() => { Debug.Log("Pinch left stop."); });
+        OnPinchStart.AddListener(() => { Debug.Log("Pinch start."); });
+        OnPinchEnd.AddListener(() => { Debug.Log("Pinch stop."); });
     }
 
     private void CreateFingerTipObj()

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6632402369178819900}
   - component: {fileID: 6891620835763424163}
   - component: {fileID: 3995587293809056247}
-  - component: {fileID: 3280434030875244739}
   m_Layer: 0
   m_Name: Bishop
   m_TagString: Untagged
@@ -82,15 +81,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3280434030875244739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1710702030654977877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3444cdb6884a7d443b3e927ccb9f6d09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
