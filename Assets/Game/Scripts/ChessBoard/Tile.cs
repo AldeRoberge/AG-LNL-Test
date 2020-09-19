@@ -21,28 +21,21 @@ namespace Game.Scripts.ChessBoard
             piece.transform.SetParent(transform, false);
 
             this.piece = piece;
-        }
+            
+            
+            // Place piece
+            GameObject children = piece.transform.GetChild(0).gameObject;
 
-        public void Update()
-        {
-            if (piece != null)
-            {
-                GameObject children = piece.transform.GetChild(0).gameObject;
+            float boxHalfSize = ((gameObject.GetComponent<BoxCollider>().size.y) / 2);
+            float pieceHalfSize = ((children.GetComponent<BoxCollider>().size.z * children.GetComponent<Transform>().localScale.z) / 2 );
 
-                Debug.Log(children.GetComponent<Transform>().localScale.z);
+            Debug.Log("Half size of box is " + boxHalfSize + " and piece " + pieceHalfSize);
 
-                float boxHalfSize = ((gameObject.GetComponent<BoxCollider>().size.y * gameObject.transform.localScale.y) / 2) - gameObject.GetComponent<BoxCollider>().center.y;
-                float pieceHalfSize = ((children.GetComponent<BoxCollider>().size.z * children.GetComponent<Transform>().localScale.z) / 2 ) - children.GetComponent<BoxCollider>().center.z;
-
-                Debug.Log("Half size of box is " + boxHalfSize + " and piece " + pieceHalfSize);
-                Debug.Log("Box full size : " + (boxHalfSize * 2));
-                Debug.Log("Total : " + (boxHalfSize + pieceHalfSize));
-
-                // Move to accurate position
-                piece.transform.localPosition = new Vector3(0,
-                    boxHalfSize + pieceHalfSize,
-                    0);
-            }
+            // Move to accurate position
+            piece.transform.localPosition = new Vector3(0,
+                boxHalfSize + pieceHalfSize,
+                0);
+            
         }
     }
 }

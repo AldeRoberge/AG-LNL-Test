@@ -101,14 +101,7 @@ public class ChessBoardGenerator : MonoBehaviour
                     tile.SetPiece(piece);
                 }
 
-                if (y == 2)
-                {
-                    break;
-                }
-
             }
-
-            break;
         }
 
         // Rescale
