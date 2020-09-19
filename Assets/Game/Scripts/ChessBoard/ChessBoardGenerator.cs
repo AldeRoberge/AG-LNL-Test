@@ -100,7 +100,6 @@ public class ChessBoardGenerator : MonoBehaviour
                 {
                     tile.SetPiece(piece);
                 }
-
             }
         }
 
@@ -202,7 +201,9 @@ public class ChessBoardGenerator : MonoBehaviour
                 piece.transform.localScale.y / 2,
                 piece.transform.localScale.z / 2);
 
-        
+
+        Grabbable g = parent.AddComponent<Grabbable>();
+
         return parent;
     }
 }

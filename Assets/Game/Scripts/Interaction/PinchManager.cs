@@ -11,7 +11,6 @@ public class PinchManager : MonoBehaviour
 
     public Grabbable currentlyHovering;
 
-
     public Grabbable currentlyGrabbing;
 
     // Start is called before the first frame update
@@ -44,7 +43,7 @@ public class PinchManager : MonoBehaviour
 
         currentlyGrabbing = b;
         b.GrabbingStart(fingerTipObj);
-        Debug.Log("Nearest grabbable is at position : " + b.GrabbableObject.transform.parent.gameObject.name);
+        Debug.Log("Nearest grabbable is : " + b.name);
     }
 
 

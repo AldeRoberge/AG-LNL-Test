@@ -21,21 +21,21 @@ namespace Game.Scripts.ChessBoard
             piece.transform.SetParent(transform, false);
 
             this.piece = piece;
-            
-            
+
             // Place piece
             GameObject children = piece.transform.GetChild(0).gameObject;
 
             float boxHalfSize = ((gameObject.GetComponent<BoxCollider>().size.y) / 2);
-            float pieceHalfSize = ((children.GetComponent<BoxCollider>().size.z * children.GetComponent<Transform>().localScale.z) / 2 );
+            float pieceHalfSize = ((children.GetComponent<BoxCollider>().size.z * children.GetComponent<Transform>().localScale.z) / 2);
 
-            Debug.Log("Half size of box is " + boxHalfSize + " and piece " + pieceHalfSize);
+            if (Config.Debug) Debug.Log("Half size of box is " + boxHalfSize + " and piece " + pieceHalfSize);
 
             // Move to accurate position
             piece.transform.localPosition = new Vector3(0,
                 boxHalfSize + pieceHalfSize,
                 0);
-            
         }
     }
+
+
 }
