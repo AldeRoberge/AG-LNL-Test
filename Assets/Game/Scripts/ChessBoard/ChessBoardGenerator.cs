@@ -41,7 +41,7 @@ public class ChessBoardAssets : Singleton<ChessBoardAssets>
     private new void Awake()
     {
         base.Awake();
-        
+
         // Tiles
         TileWhiteMaterial = ResourceLoader.Load<Material>("Chess/Tiles/Materials/TileMatBlack");
         TileBlackMaterial = ResourceLoader.Load<Material>("Chess/Tiles/Materials/TileMatWhite");
@@ -74,7 +74,6 @@ public class ChessBoardGenerator : MonoBehaviour
         Generate();
     }
 
-
     /// <summary>
     /// Generate the chess board (tiles and pieces).
     /// </summary>
@@ -101,7 +100,15 @@ public class ChessBoardGenerator : MonoBehaviour
                 {
                     tile.SetPiece(piece);
                 }
+
+                if (y == 2)
+                {
+                    break;
+                }
+
             }
+
+            break;
         }
 
         // Rescale
@@ -174,6 +181,7 @@ public class ChessBoardGenerator : MonoBehaviour
 
         // Create parent
         GameObject parent = new GameObject();
+        parent.transform.position = Vector3.zero;
 
         GameObject piece = Instantiate(piecePrefab, parent.transform, true);
         piece.name = "Piece";
@@ -185,19 +193,23 @@ public class ChessBoardGenerator : MonoBehaviour
         if (color == ChessPieceColor.White)
         {
             parent.name = "White";
-            piece.GetComponent<MeshRenderer>().material = ChessBoardAssets.Instance.PieceWhiteMaterial;
+            piece.GetComponentInChildren<MeshRenderer>().material = ChessBoardAssets.Instance.PieceWhiteMaterial;
         }
         else
         {
             parent.name = "Black";
-            piece.GetComponent<MeshRenderer>().material = ChessBoardAssets.Instance.PieceBlackMaterial;
+            piece.GetComponentInChildren<MeshRenderer>().material = ChessBoardAssets.Instance.PieceBlackMaterial;
         }
 
-        piece.AddComponent<BoxCollider>();
+        BoxCollider b = piece.AddComponent<BoxCollider>();
 
         parent.name += " " + type + " (" + x + ", " + y + ")";
-        parent.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        piece.transform.localScale =
+            new Vector3(piece.transform.localScale.x / 2,
+                piece.transform.localScale.y / 2,
+                piece.transform.localScale.z / 2);
 
+        
         return parent;
     }
 }

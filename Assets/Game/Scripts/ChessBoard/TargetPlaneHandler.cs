@@ -1,4 +1,4 @@
-﻿using Game.Scripts.ChessBoard.Models;
+﻿﻿using Game.Scripts.ChessBoard.Models;
 using UnityEngine;
 
 namespace Game.Scripts.ChessBoard
@@ -7,7 +7,7 @@ namespace Game.Scripts.ChessBoard
     {
         public GameObject TargetPlane;
         
-        public void Start()
+        public void Awake()
         {
             TargetPlane = GameObject.CreatePrimitive(PrimitiveType.Plane);
             TargetPlane.transform.position = new Vector3(0, 0.51f, 0);
