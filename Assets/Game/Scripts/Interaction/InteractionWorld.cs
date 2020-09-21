@@ -44,6 +44,12 @@ public class InteractionWorld : Singleton<InteractionWorld>
             {
                 tile.SetValid(true);
             }
+
+
+            if (tile.Position.x == x && tile.Position.y == y)
+            {
+                tile.SetValid(true);
+            }
         }
     }
 

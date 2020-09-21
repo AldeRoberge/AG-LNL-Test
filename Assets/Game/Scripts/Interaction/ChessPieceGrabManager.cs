@@ -14,9 +14,6 @@ public class ChessPieceGrabManager : MonoBehaviour
     public Grabbable currentlyHovering;
     public Grabbable currentlyGrabbing;
 
-
-    public Tile StartTile;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -98,6 +95,13 @@ public class ChessPieceGrabManager : MonoBehaviour
 
         Debug.Log(fromX + " " + fromY + ", " + toX + "," + toY);
 
+
+        if (fromX == toX && fromY == toY)
+        {
+            MoveCurrentlyGrabbedPiece(currentlyGrabbing.Tile);
+            yield break;
+        }
+
         bool isValidMove =
             ChessBoardConstants.Instance.Engine.IsValidMove(fromX, fromY, toX, toY);
 
@@ -160,18 +164,23 @@ public class ChessPieceGrabManager : MonoBehaviour
 
     public void Update()
     {
-        Grabbable b = NearestObjUtils.GetNearestGameObject(
-            p.RightHandPinchDetector.FingerTipObj,
-            InteractionWorld.Instance.Grabbables);
-
-        if (currentlyHovering != b)
+        
+        // Only update tracking if hand tracking is of high confidence
+        if (p.RightHandPinchDetector.OVRHand.IsDataHighConfidence)
         {
-            if (currentlyHovering == null) currentlyHovering = b;
+            Grabbable b = NearestObjUtils.GetNearestGameObject(
+                p.RightHandPinchDetector.FingerTipObj,
+                InteractionWorld.Instance.Grabbables);
 
-            currentlyHovering.SetIsHovering(false);
-            b.SetIsHovering(true);
+            if (currentlyHovering != b)
+            {
+                if (currentlyHovering == null) currentlyHovering = b;
 
-            currentlyHovering = b;
+                currentlyHovering.SetIsHovering(false);
+                b.SetIsHovering(true);
+
+                currentlyHovering = b;
+            }
         }
     }
 }

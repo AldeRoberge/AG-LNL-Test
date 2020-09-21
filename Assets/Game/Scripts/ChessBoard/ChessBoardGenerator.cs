@@ -43,6 +43,7 @@ namespace Game.Scripts.ChessBoard
         public Material PieceBlackMaterial;
 
         public Material TargetPlaneMaterial;
+        public Material BorderMaterial;
 
         // Start is called before the first frame update
         private new void Awake()
@@ -67,9 +68,11 @@ namespace Game.Scripts.ChessBoard
             PawnData = ResourceLoader.Load<GameObject>("Chess/Pieces/Prefabs/Pawn");
 
             TargetPlaneMaterial = ResourceLoader.Load<Material>("Chess/Interaction/TargetPlane/Green");
+            
+            BorderMaterial = ResourceLoader.Load<Material>("Chess/Border/Materials/Border");
         }
     }
-    
+
     public class ChessBoardGenerator : Singleton<ChessBoardGenerator>
     {
         public List<Tile> Tiles = new List<Tile>();
@@ -123,12 +126,19 @@ namespace Game.Scripts.ChessBoard
             GameObject board = new GameObject("Board");
             board.transform.parent = transform;
 
+
+            GameObject border = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            border.transform.parent = board.transform;
+            border.transform.position = new Vector3(8.5f, 0, 8.5f);
+            border.transform.localScale = new Vector3(25, 1, 25);
+            border.AddComponent<Border>();
+
             GameObject tilesParent = new GameObject("Tiles");
             GameObject piecesParent = new GameObject("Pieces");
 
             tilesParent.transform.parent = board.transform;
             piecesParent.transform.parent = board.transform;
-            
+
             for (byte x = 0; x < ChessBoardConstants.Size; x++)
             {
                 for (byte y = 0; y < ChessBoardConstants.Size; y++)
@@ -145,7 +155,7 @@ namespace Game.Scripts.ChessBoard
             }
 
             // Rescale
-            board.transform.transform.position = new Vector3(-0.5f, 5.5f, 0.3f);
+            board.transform.transform.position = new Vector3(-0.25f, 5.5f, 0.3f);
             board.transform.localScale = new Vector3(0.04f, 0.04f, 0.04f);
         }
 
@@ -254,4 +264,6 @@ namespace Game.Scripts.ChessBoard
             return parent;
         }
     }
+
+
 }
