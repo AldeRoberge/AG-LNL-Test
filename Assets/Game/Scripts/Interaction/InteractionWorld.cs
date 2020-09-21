@@ -61,4 +61,9 @@ public class InteractionWorld : Singleton<InteractionWorld>
 
         return t;
     }
+
+    public void RemoveGrabbable(Grabbable grabbable)
+    {
+        Grabbables.Remove(grabbable);
+    }
 }

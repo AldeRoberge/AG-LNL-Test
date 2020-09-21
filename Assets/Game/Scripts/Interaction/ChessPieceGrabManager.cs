@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DefaultNamespace;
 using Game.Scripts.ChessBoard;
 using UnityEngine;
@@ -22,7 +23,7 @@ public class ChessPieceGrabManager : MonoBehaviour
         p = gameObject.AddComponent<PinchDetectorInitializer>();
 
         p.RightHandPinchDetector.OnPinchStart.AddListener(() => { Grab(p.RightHandPinchDetector.FingerTipObj); });
-        p.RightHandPinchDetector.OnPinchEnd.AddListener(() => { Ungrab(); });
+        p.RightHandPinchDetector.OnPinchEnd.AddListener(() => { StartCoroutine(Ungrab()); });
     }
 
     private void Grab(GameObject fingerTipObj)
@@ -38,6 +39,15 @@ public class ChessPieceGrabManager : MonoBehaviour
         Debug.Log("Started grabbing : " + b.name);
 
         UpdateValidTiles(b.Tile);
+
+        List<Tile> validMoves = InteractionWorld.Instance.GetValidTiles();
+
+        if (validMoves.Count == 0)
+        {
+            MoveCurrentlyGrabbedPiece(currentlyGrabbing.Tile);
+            Debug.Log("Moved piece to original position.");
+            return;
+        }
     }
 
     private void UpdateValidTiles(Tile bTile)
@@ -46,27 +56,29 @@ public class ChessPieceGrabManager : MonoBehaviour
         InteractionWorld.Instance.SetTileValidMove(bTile.Position.x, bTile.Position.y);
     }
 
-    private void Ungrab()
+    private IEnumerator Ungrab()
     {
         if (currentlyGrabbing == null)
         {
-            return;
+            yield return null;
         }
 
         List<Tile> validMoves = InteractionWorld.Instance.GetValidTiles();
 
         Debug.Log("There is " + validMoves.Count + " valid moves...");
 
+
         Tile nearestValidTile = NearestObjUtils.GetNearestGameObject(
             p.RightHandPinchDetector.FingerTipObj,
             validMoves);
 
+
         Debug.Log("The nearest valid tile is " + nearestValidTile + ".");
 
-        byte fromX = (byte) (nearestValidTile.Position.x);
-        byte fromY = (byte) (nearestValidTile.Position.y);
-        byte toX = (byte) (currentlyGrabbing.Tile.Position.x);
-        byte toY = (byte) (currentlyGrabbing.Tile.Position.y);
+        byte fromX = nearestValidTile.Position.x;
+        byte fromY = (byte) (8 - nearestValidTile.Position.y);
+        byte toX = currentlyGrabbing.Tile.Position.x;
+        byte toY = (byte) (8 - currentlyGrabbing.Tile.Position.y);
 
         Debug.Log(fromX + "," + fromY);
         Debug.Log(toX + "," + toY);
@@ -78,7 +90,7 @@ public class ChessPieceGrabManager : MonoBehaviour
         {
             for (byte y = 0; y < 9; y++)
             {
-                bool isValid = ChessBoardConstants.Instance.Engine.IsValidMove(fromY, fromX, x, y);
+                bool isValid = ChessBoardConstants.Instance.Engine.IsValidMove(fromX, fromY, x, y);
                 Debug.Log("Is valid move : " + isValid + ", " + x + "," + y);
             }
         }
@@ -88,15 +100,46 @@ public class ChessPieceGrabManager : MonoBehaviour
             Debug.Log("Is not a valid move!");
         }
 
-        if (isValidMove)
+        ChessBoardConstants.Instance.Engine.MovePiece(fromX, fromY, toX, toY);
+
+        MoveCurrentlyGrabbedPiece(nearestValidTile);
+
+        StartCoroutine(WaitForEngineThinking());
+    }
+
+    private void MoveCurrentlyGrabbedPiece(Tile nearestValidTile)
+    {
+        currentlyGrabbing.GrabbingStopped();
+        nearestValidTile.SetPiece(currentlyGrabbing.gameObject);
+        InteractionWorld.Instance.ResetTileValidMoves();
+
+        currentlyGrabbing = null;
+    }
+
+    private bool EngineIsThinking = false;
+
+    private IEnumerator WaitForEngineThinking()
+    {
+        Task.Factory.StartNew(() => { ChessBoardConstants.Instance.Engine.AiPonderMove(); });
+
+        yield return new WaitForSeconds(1);
+
+        while (ChessBoardConstants.Instance.Engine.Thinking)
         {
-            ChessBoardConstants.Instance.Engine.MovePiece(fromX, fromY, toX, toY);
-
-            currentlyGrabbing.GrabbingStopped();
-            nearestValidTile.SetPiece(currentlyGrabbing.gameObject);
-
-            InteractionWorld.Instance.ResetTileValidMoves();
+            if (!EngineIsThinking)
+            {
+                EngineIsThinking = true;
+                Debug.Log("Engine is thinking...");
+            }
+            
+            yield return new WaitForFixedUpdate();
         }
+
+        EngineIsThinking = false;
+
+        Debug.Log("Engine has stopped thinking.");
+
+        StartCoroutine(ChessBoardGenerator.Instance.RegenPieces());
     }
 
     public void Update()

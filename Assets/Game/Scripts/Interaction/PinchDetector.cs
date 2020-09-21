@@ -18,15 +18,8 @@ public class PinchDetector : MonoBehaviour
     void Awake()
     {
         CreateFingerTipObj();
-        AddListeners();
     }
-
-    private void AddListeners()
-    {
-        OnPinchStart.AddListener(() => { Debug.Log("Pinch start."); });
-        OnPinchEnd.AddListener(() => { Debug.Log("Pinch stop."); });
-    }
-
+    
     private void CreateFingerTipObj()
     {
         FingerTipObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);

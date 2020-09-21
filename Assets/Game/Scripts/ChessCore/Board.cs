@@ -734,8 +734,6 @@ namespace ChessEngine.Engine
             //Record my last move
             board.LastMove = new MoveContent();
 
-            Debug.Log("Piece is " + piece);
-
             if (piece.PieceColor == ChessPieceColor.Black)
             {
                 board.MoveCount++;

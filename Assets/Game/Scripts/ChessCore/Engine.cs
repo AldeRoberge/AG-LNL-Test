@@ -10,7 +10,7 @@ namespace ChessEngine.Engine
 
         internal List<OpeningMove> CurrentGameBook;
         internal List<OpeningMove> UndoGameBook;
-        
+
         #endregion
 
         #region PrivateMembers
@@ -18,7 +18,7 @@ namespace ChessEngine.Engine
         private Board ChessBoard;
         private Board PreviousChessBoard;
         private Board UndoChessBoard;
-        
+
         private Stack<MoveContent> MoveHistory;
         private List<OpeningMove> OpeningBook;
 
@@ -77,29 +77,28 @@ namespace ChessEngine.Engine
 
         public Difficulty GameDifficulty
         {
-           	get 
-			{
-				if (PlyDepthSearched == 3)
-				{
-					return Difficulty.Easy;
-				}
-				else if (PlyDepthSearched == 5)
-				{
-					return Difficulty.Medium;
-				}
-				else if (PlyDepthSearched == 6)
-				{
-					return Difficulty.Hard;
-				}
-				else if (PlyDepthSearched == 7)
-				{
-					return Difficulty.VeryHard;
-				}
+            get
+            {
+                if (PlyDepthSearched == 3)
+                {
+                    return Difficulty.Easy;
+                }
+                else if (PlyDepthSearched == 5)
+                {
+                    return Difficulty.Medium;
+                }
+                else if (PlyDepthSearched == 6)
+                {
+                    return Difficulty.Hard;
+                }
+                else if (PlyDepthSearched == 7)
+                {
+                    return Difficulty.VeryHard;
+                }
 
-				return Difficulty.Medium;
-			
-			}
-			set
+                return Difficulty.Medium;
+            }
+            set
             {
                 if (value == Difficulty.Easy)
                 {
@@ -135,6 +134,7 @@ namespace ChessEngine.Engine
             get { return ChessBoard.StaleMate; }
             set { ChessBoard.StaleMate = value; }
         }
+
         public bool RepeatedMove
         {
             get
@@ -150,28 +150,25 @@ namespace ChessEngine.Engine
 
         public string PvLine
         {
-            get { return pvLine;}
+            get { return pvLine; }
         }
 
         public bool FiftyMove
         {
-             get
-             {
-                 if (ChessBoard.HalfMoveClock >= 100)
-                 {
-                     return true;
-                 }
+            get
+            {
+                if (ChessBoard.HalfMoveClock >= 100)
+                {
+                    return true;
+                }
 
-                 return false;
-             }
+                return false;
+            }
         }
 
         public bool InsufficientMaterial
         {
-            get
-            {
-                return ChessBoard.InsufficientMaterial;
-            }
+            get { return ChessBoard.InsufficientMaterial; }
         }
 
         #endregion
@@ -224,7 +221,7 @@ namespace ChessEngine.Engine
         #region Methods
 
         public void SetChessPieceSelection(byte boardColumn, byte boardRow,
-                                          bool selection)
+            bool selection)
         {
             byte index = GetBoardIndex(boardColumn, boardRow);
 
@@ -232,14 +229,17 @@ namespace ChessEngine.Engine
             {
                 return;
             }
+
             if (ChessBoard.Squares[index].Piece.PieceColor != HumanPlayer)
             {
                 return;
             }
+
             if (ChessBoard.Squares[index].Piece.PieceColor != WhoseMove)
             {
                 return;
             }
+
             ChessBoard.Squares[index].Piece.Selected = selection;
         }
 
@@ -251,7 +251,7 @@ namespace ChessEngine.Engine
         private static bool CheckForMate(ChessPieceColor whosTurn, ref Board chessBoard)
         {
             Search.SearchForMate(whosTurn, chessBoard, ref chessBoard.BlackMate,
-                                 ref chessBoard.WhiteMate, ref chessBoard.StaleMate);
+                ref chessBoard.WhiteMate, ref chessBoard.StaleMate);
 
             if (chessBoard.BlackMate || chessBoard.WhiteMate || chessBoard.StaleMate)
             {
@@ -264,7 +264,7 @@ namespace ChessEngine.Engine
         private static bool FindPlayBookMove(ref MoveContent bestMove, Board chessBoard, IEnumerable<OpeningMove> openingBook)
         {
             //Get the Hash for the current Board;
-            string boardFen= Board.Fen(true, chessBoard);
+            string boardFen = Board.Fen(true, chessBoard);
 
             //Check the Opening Move Book
             foreach (OpeningMove move in openingBook)
@@ -298,7 +298,7 @@ namespace ChessEngine.Engine
 
         private static byte GetBoardIndex(byte boardColumn, byte boardRow)
         {
-            return (byte)(boardColumn + (boardRow * 8));
+            return (byte) (boardColumn + (boardRow * 8));
         }
 
         public byte[] GetEnPassantMoves()
@@ -310,8 +310,8 @@ namespace ChessEngine.Engine
 
             var returnArray = new byte[2];
 
-            returnArray[0] = (byte)(ChessBoard.EnPassantPosition % 8);
-            returnArray[1] = (byte)(ChessBoard.EnPassantPosition / 8);
+            returnArray[0] = (byte) (ChessBoard.EnPassantPosition % 8);
+            returnArray[1] = (byte) (ChessBoard.EnPassantPosition / 8);
 
             return returnArray;
         }
@@ -386,6 +386,7 @@ namespace ChessEngine.Engine
             {
                 return ChessPieceColor.White;
             }
+
             return ChessBoard.Squares[index].Piece.PieceColor;
         }
 
@@ -395,6 +396,7 @@ namespace ChessEngine.Engine
             {
                 return ChessPieceColor.White;
             }
+
             return ChessBoard.Squares[index].Piece.PieceColor;
         }
 
@@ -437,8 +439,8 @@ namespace ChessEngine.Engine
             foreach (byte square in ChessBoard.Squares[index].Piece.ValidMoves)
             {
                 returnArray[counter] = new byte[2];
-                returnArray[counter][0] = (byte)(square % 8);
-                returnArray[counter][1] = (byte)(square /8);
+                returnArray[counter][0] = (byte) (square % 8);
+                returnArray[counter][1] = (byte) (square / 8);
                 counter++;
             }
 
@@ -468,9 +470,8 @@ namespace ChessEngine.Engine
                             {
                                 if ((dstPosition + 7) % 8 == forceCol || forceCol == -1)
                                 {
-                                    return (byte)(dstPosition + 7);
+                                    return (byte) (dstPosition + 7);
                                 }
-                                
                             }
                         }
                     }
@@ -491,7 +492,7 @@ namespace ChessEngine.Engine
                         }
                     }
                 }
-                else 
+                else
                 {
                     if (dstPosition - 7 >= 0)
                     {
@@ -503,7 +504,7 @@ namespace ChessEngine.Engine
                             {
                                 if (square.Piece.PieceColor == chessPieceColor)
                                 {
-                                    if ((dstPosition - 7)%8 == forceCol || forceCol == -1)
+                                    if ((dstPosition - 7) % 8 == forceCol || forceCol == -1)
                                     {
                                         return (byte) (dstPosition - 7);
                                     }
@@ -511,6 +512,7 @@ namespace ChessEngine.Engine
                             }
                         }
                     }
+
                     if (dstPosition - 9 >= 0)
                     {
                         square = ChessBoard.Squares[dstPosition - 9];
@@ -521,7 +523,7 @@ namespace ChessEngine.Engine
                             {
                                 if (square.Piece.PieceColor == chessPieceColor)
                                 {
-                                    if ((dstPosition - 9)%8 == forceCol || forceCol == -1)
+                                    if ((dstPosition - 9) % 8 == forceCol || forceCol == -1)
                                     {
                                         return (byte) (dstPosition - 9);
                                     }
@@ -542,22 +544,22 @@ namespace ChessEngine.Engine
                     continue;
                 if (square.Piece.PieceColor != chessPieceColor)
                     continue;
-               
+
                 foreach (byte move in square.Piece.ValidMoves)
                 {
                     if (move == dstPosition)
                     {
                         if (!capture)
                         {
-                            if ((byte)(x / 8) == (forceRow) || forceRow == -1)
+                            if ((byte) (x / 8) == (forceRow) || forceRow == -1)
                             {
-                                if (x%8 == forceCol || forceCol == -1)
+                                if (x % 8 == forceCol || forceCol == -1)
                                 {
                                     return x;
                                 }
                             }
                         }
-                                
+
                         //Capture
                         if (ChessBoard.Squares[dstPosition].Piece != null)
                         {
@@ -565,7 +567,7 @@ namespace ChessEngine.Engine
                             {
                                 if (x % 8 == forceCol || forceCol == -1)
                                 {
-                                    if ((byte)(x / 8) == (forceRow) || forceRow == -1)
+                                    if ((byte) (x / 8) == (forceRow) || forceRow == -1)
                                     {
                                         return x;
                                     }
@@ -579,12 +581,12 @@ namespace ChessEngine.Engine
             return 0;
         }
 
-		public bool IsValidMoveAN(string move)
-		{
-			byte sourceColumn=0, sourceRow=0, destinationColumn=0, destinationRow=0;
-			MoveContent.ParseAN(move, ref sourceColumn, ref sourceRow, ref destinationColumn, ref destinationRow);
-			return IsValidMove(sourceColumn, sourceRow, destinationColumn, destinationRow);
-		}
+        public bool IsValidMoveAN(string move)
+        {
+            byte sourceColumn = 0, sourceRow = 0, destinationColumn = 0, destinationRow = 0;
+            MoveContent.ParseAN(move, ref sourceColumn, ref sourceRow, ref destinationColumn, ref destinationRow);
+            return IsValidMove(sourceColumn, sourceRow, destinationColumn, destinationRow);
+        }
 
         public bool IsValidMove(byte srcPosition, byte dstPosition)
         {
@@ -642,7 +644,7 @@ namespace ChessEngine.Engine
             {
                 if (bs % 8 == destinationColumn)
                 {
-                    if ((byte)(bs / 8) == destinationRow)
+                    if ((byte) (bs / 8) == destinationRow)
                     {
                         return true;
                     }
@@ -665,14 +667,17 @@ namespace ChessEngine.Engine
             {
                 return true;
             }
+
             if (ChessBoard.WhiteMate || ChessBoard.BlackMate)
             {
                 return true;
             }
+
             if (ChessBoard.HalfMoveClock >= 100)
             {
                 return true;
             }
+
             if (ChessBoard.RepeatedMove >= 3)
             {
                 return true;
@@ -682,6 +687,7 @@ namespace ChessEngine.Engine
             {
                 return true;
             }
+
             return false;
         }
 
@@ -691,11 +697,12 @@ namespace ChessEngine.Engine
             {
                 return true;
             }
-            
+
             if (ChessBoard.HalfMoveClock >= 100)
             {
                 return true;
             }
+
             if (ChessBoard.RepeatedMove >= 3)
             {
                 return true;
@@ -708,6 +715,7 @@ namespace ChessEngine.Engine
 
             return false;
         }
+
         public bool MovePiece(byte srcPosition, byte dstPosition)
         {
             Piece piece = ChessBoard.Squares[srcPosition].Piece;
@@ -744,7 +752,7 @@ namespace ChessEngine.Engine
                     return false;
                 }
             }
-   
+
             MoveHistory.Push(ChessBoard.LastMove);
             FileIO.SaveCurrentGameMove(ChessBoard, PreviousChessBoard, CurrentGameBook, ChessBoard.LastMove);
 
@@ -790,6 +798,7 @@ namespace ChessEngine.Engine
                         PiecesTakenCount.WhitePawn++;
                     }
                 }
+
                 if (ChessBoard.LastMove.TakenPiece.PieceColor == ChessPieceColor.Black)
                 {
                     if (lastMove.TakenPiece.PieceType == ChessPieceType.Queen)
@@ -843,6 +852,7 @@ namespace ChessEngine.Engine
                         PiecesTakenCount.WhitePawn--;
                     }
                 }
+
                 if (lastMove.TakenPiece.PieceColor == ChessPieceColor.Black)
                 {
                     if (lastMove.TakenPiece.PieceType == ChessPieceType.Queen)
@@ -869,17 +879,17 @@ namespace ChessEngine.Engine
             }
         }
 
-		public bool MovePieceAN(string move)
-		{
-			byte sourceColumn=0, sourceRow=0, destinationColumn=0, destinationRow=0;
-			MoveContent.ParseAN(move, ref sourceColumn, ref sourceRow, ref destinationColumn, ref destinationRow);
-			return MovePiece(sourceColumn, sourceRow, destinationColumn, destinationRow);
-		}
+        public bool MovePieceAN(string move)
+        {
+            byte sourceColumn = 0, sourceRow = 0, destinationColumn = 0, destinationRow = 0;
+            MoveContent.ParseAN(move, ref sourceColumn, ref sourceRow, ref destinationColumn, ref destinationRow);
+            return MovePiece(sourceColumn, sourceRow, destinationColumn, destinationRow);
+        }
 
         public bool MovePiece(byte sourceColumn, byte sourceRow, byte destinationColumn, byte destinationRow)
         {
-            byte srcPosition = (byte)(sourceColumn + (sourceRow * 8));
-            byte dstPosition = (byte)(destinationColumn + (destinationRow * 8));
+            byte srcPosition = (byte) (sourceColumn + (sourceRow * 8));
+            byte dstPosition = (byte) (destinationColumn + (destinationRow * 8));
 
             return MovePiece(srcPosition, dstPosition);
         }
@@ -887,7 +897,6 @@ namespace ChessEngine.Engine
         internal void SetChessPiece(Piece piece, byte index)
         {
             ChessBoard.Squares[index].Piece = new Piece(piece);
-
         }
 
         #endregion
@@ -898,34 +907,34 @@ namespace ChessEngine.Engine
         {
             Thinking = true;
 
-			/* Fix added to prevent premature declaration of checkmate against computer's king.
-			 * 
-			 * The original version only looked at squares that were available for the black king to move to PRIOR to white's latest move.
-			 * So... suppose you had a situation like this:
-			 *	r4r2/pppb1p1k/8/3p2Q1/q4P2/2np4/6PP/5RK1/ w - 0 27
-			 *  ... and moved the white queen from G5 to H5.
-			 *	At the start of white's move, the black king has 5 possible moves... 4 of which are attackable by white, and noted by
-			 *	GenerateValidMoves in WhiteAttackBoard[]. When AiPonderMove executes, it immediately eliminates those 4 squares as options
-			 *	for the black king, even though 2 of them are now safe because no white piece can attack them. However, square 7 is now
-			 *	directly in the queen's attack path, so it's eliminated as an option as well. Boom, premature checkmate... game over.
-		    */
-			ChessBoard.BlackMate = false;
-			ChessBoard.WhiteMate = false;
-			PieceValidMoves.GenerateValidMoves(ChessBoard);
-		
+            /* Fix added to prevent premature declaration of checkmate against computer's king.
+             * 
+             * The original version only looked at squares that were available for the black king to move to PRIOR to white's latest move.
+             * So... suppose you had a situation like this:
+             *	r4r2/pppb1p1k/8/3p2Q1/q4P2/2np4/6PP/5RK1/ w - 0 27
+             *  ... and moved the white queen from G5 to H5.
+             *	At the start of white's move, the black king has 5 possible moves... 4 of which are attackable by white, and noted by
+             *	GenerateValidMoves in WhiteAttackBoard[]. When AiPonderMove executes, it immediately eliminates those 4 squares as options
+             *	for the black king, even though 2 of them are now safe because no white piece can attack them. However, square 7 is now
+             *	directly in the queen's attack path, so it's eliminated as an option as well. Boom, premature checkmate... game over.
+            */
+            ChessBoard.BlackMate = false;
+            ChessBoard.WhiteMate = false;
+            PieceValidMoves.GenerateValidMoves(ChessBoard);
+
             NodesSearched = 0;
-			
-			var resultBoards = new ResultBoards();
+
+            var resultBoards = new ResultBoards();
             resultBoards.Positions = new List<Board>();
 
             if (CheckForMate(WhoseMove, ref ChessBoard))
             {
                 Thinking = false;
-				return;
+                return;
             }
 
             MoveContent bestMove = new MoveContent();
-           
+
             //If there is no playbook move search for the best move
             if (FindPlayBookMove(ref bestMove, ChessBoard, OpeningBook) == false
                 || ChessBoard.HalfMoveClock > 90 || ChessBoard.RepeatedMove >= 2)
@@ -933,14 +942,14 @@ namespace ChessEngine.Engine
                 if (FindPlayBookMove(ref bestMove, ChessBoard, CurrentGameBook) == false ||
                     ChessBoard.HalfMoveClock > 90 || ChessBoard.RepeatedMove >= 2)
                 {
-					bestMove = Search.IterativeSearch(ChessBoard, PlyDepthSearched, ref NodesSearched, ref NodesQuiessence, ref pvLine, ref PlyDepthReached, ref RootMovesSearched, CurrentGameBook);
+                    bestMove = Search.IterativeSearch(ChessBoard, PlyDepthSearched, ref NodesSearched, ref NodesQuiessence, ref pvLine, ref PlyDepthReached, ref RootMovesSearched, CurrentGameBook);
                 }
             }
- 
+
             //Make the move 
             PreviousChessBoard = new Board(ChessBoard);
 
-            RootMovesSearched = (byte)resultBoards.Positions.Count;
+            RootMovesSearched = (byte) resultBoards.Positions.Count;
 
             Board.MovePiece(ChessBoard, bestMove.MovingPiecePrimary.SrcPosition, bestMove.MovingPiecePrimary.DstPosition, ChessPieceType.Queen);
 
@@ -974,7 +983,7 @@ namespace ChessEngine.Engine
                 {
                     LastMove.PgnMove += "#";
                 }
-				
+
                 return;
             }
 
@@ -984,8 +993,8 @@ namespace ChessEngine.Engine
             }
 
             Thinking = false;
-		}
-        
+        }
+
         #endregion
 
         #region FileIO
@@ -1008,7 +1017,5 @@ namespace ChessEngine.Engine
         }
 
         #endregion
-   
-
     }
 }
