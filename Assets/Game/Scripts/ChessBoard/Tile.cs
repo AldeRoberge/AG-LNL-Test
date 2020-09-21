@@ -50,12 +50,12 @@ namespace Game.Scripts.ChessBoard
             if (isValid)
             {
                 IsValid = isValid;
-                this.GetComponent<Renderer>().material.color = Color.green;
+                TargetPlaneHandler.SetTargetPlaneVisible(true);
             }
             else
             {
                 IsValid = isValid;
-                this.GetComponent<Renderer>().material.color = Color.clear;
+                TargetPlaneHandler.SetTargetPlaneVisible(false);
             }
         }
     }

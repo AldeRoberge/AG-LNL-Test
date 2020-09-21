@@ -28,6 +28,12 @@ public class ChessPieceGrabManager : MonoBehaviour
 
     private void Grab(GameObject fingerTipObj)
     {
+        if (ChessBoardConstants.Instance.Engine.WhoseMove != ChessBoardConstants.Instance.Engine.HumanPlayer)
+        {
+            Debug.Log("Is not currently your turn!");
+            return;
+        }
+
         Grabbable b = NearestObjUtils.GetNearestGameObject(
             fingerTipObj,
             InteractionWorld.Instance.Grabbables);

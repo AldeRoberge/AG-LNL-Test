@@ -18,7 +18,7 @@ namespace Game.Scripts.ChessBoard
             SetTargetPlaneVisible(false);
         }
 
-        private void SetTargetPlaneVisible(bool isVisible)
+        public void SetTargetPlaneVisible(bool isVisible)
         {
             TargetPlane.GetComponent<Renderer>().enabled = isVisible;
         }
