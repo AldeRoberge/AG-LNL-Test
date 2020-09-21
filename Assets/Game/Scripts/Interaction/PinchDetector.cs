@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Game.Scripts;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -19,15 +20,19 @@ public class PinchDetector : MonoBehaviour
     {
         CreateFingerTipObj();
     }
-    
+
     private void CreateFingerTipObj()
     {
         FingerTipObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         FingerTipObj.transform.localScale = new Vector3(0.025f, 0.025f, 0.025f);
 
+        if (!Config.Debug)
+        {
+            FingerTipObj.GetComponent<MeshRenderer>().enabled = false;
+        }
+
         SphereCollider s = FingerTipObj.GetComponent<SphereCollider>();
         s.isTrigger = true;
-
     }
 
     // Update is called once per frame

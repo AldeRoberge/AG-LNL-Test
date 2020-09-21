@@ -55,7 +55,7 @@ namespace Game.Scripts.ChessBoard
             else
             {
                 IsValid = isValid;
-                this.GetComponent<Renderer>().material.color = Color.white;
+                this.GetComponent<Renderer>().material.color = Color.clear;
             }
         }
     }

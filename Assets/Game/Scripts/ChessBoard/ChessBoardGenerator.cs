@@ -22,7 +22,6 @@ namespace Game.Scripts.ChessBoard
         public void Awake()
         {
             Engine = new Engine();
-            Engine.HumanPlayer = ChessPieceColor.White;
         }
     }
 
@@ -70,8 +69,7 @@ namespace Game.Scripts.ChessBoard
             TargetPlaneMaterial = ResourceLoader.Load<Material>("Chess/Interaction/TargetPlane/Green");
         }
     }
-
-
+    
     public class ChessBoardGenerator : Singleton<ChessBoardGenerator>
     {
         public List<Tile> Tiles = new List<Tile>();
@@ -90,8 +88,6 @@ namespace Game.Scripts.ChessBoard
 
             Pieces.Clear();
 
-            yield return new WaitForSeconds(2);
-
             Debug.Log("Now regenerating...");
 
             foreach (Tile tile in Tiles)
@@ -101,7 +97,7 @@ namespace Game.Scripts.ChessBoard
                     tile.Position.y,
                     tile);
 
-                Debug.Log("Creating piece at " + tile.Position.x + ", " + tile.Position.y);
+                if (Config.Debug) Debug.Log("Creating piece at " + tile.Position.x + ", " + tile.Position.y);
 
                 if (piece != null)
                 {
@@ -110,6 +106,8 @@ namespace Game.Scripts.ChessBoard
             }
 
             Debug.Log("Generated " + Pieces.Count + " pieces.");
+
+            yield break;
         }
 
         public void Start()
@@ -130,8 +128,7 @@ namespace Game.Scripts.ChessBoard
 
             tilesParent.transform.parent = board.transform;
             piecesParent.transform.parent = board.transform;
-
-
+            
             for (byte x = 0; x < ChessBoardConstants.Size; x++)
             {
                 for (byte y = 0; y < ChessBoardConstants.Size; y++)

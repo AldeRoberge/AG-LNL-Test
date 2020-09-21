@@ -53,6 +53,9 @@ public class ChessPieceGrabManager : MonoBehaviour
     private void UpdateValidTiles(Tile bTile)
     {
         InteractionWorld.Instance.ResetTileValidMoves();
+
+        Debug.Log("Loading valid tiles for " + bTile.Position + ".");
+
         InteractionWorld.Instance.SetTileValidMove(bTile.Position.x, bTile.Position.y);
     }
 
@@ -60,13 +63,20 @@ public class ChessPieceGrabManager : MonoBehaviour
     {
         if (currentlyGrabbing == null)
         {
-            yield return null;
+            yield break;
         }
+
+        Debug.Log("It is currently turn of " + ChessBoardConstants.Instance.Engine.WhoseMove);
+        Debug.Log("Human is of color " + ChessBoardConstants.Instance.Engine.HumanPlayer);
 
         List<Tile> validMoves = InteractionWorld.Instance.GetValidTiles();
 
-        Debug.Log("There is " + validMoves.Count + " valid moves...");
+        Debug.Log("There is " + validMoves.Count + " valid moves from " + currentlyGrabbing.Tile.Position + "...");
 
+        foreach (Tile tile in validMoves)
+        {
+            Debug.Log("Valid move : " + tile.Position);
+        }
 
         Tile nearestValidTile = NearestObjUtils.GetNearestGameObject(
             p.RightHandPinchDetector.FingerTipObj,
@@ -75,13 +85,12 @@ public class ChessPieceGrabManager : MonoBehaviour
 
         Debug.Log("The nearest valid tile is " + nearestValidTile + ".");
 
-        byte fromX = nearestValidTile.Position.x;
-        byte fromY = (byte) (8 - nearestValidTile.Position.y);
-        byte toX = currentlyGrabbing.Tile.Position.x;
-        byte toY = (byte) (8 - currentlyGrabbing.Tile.Position.y);
+        byte fromX = currentlyGrabbing.Tile.Position.x;
+        byte fromY = currentlyGrabbing.Tile.Position.y;
+        byte toX = nearestValidTile.Position.x;
+        byte toY = nearestValidTile.Position.y;
 
-        Debug.Log(fromX + "," + fromY);
-        Debug.Log(toX + "," + toY);
+        Debug.Log(fromX + " " + fromY + ", " + toX + "," + toY);
 
         bool isValidMove =
             ChessBoardConstants.Instance.Engine.IsValidMove(fromX, fromY, toX, toY);
@@ -122,6 +131,7 @@ public class ChessPieceGrabManager : MonoBehaviour
     {
         Task.Factory.StartNew(() => { ChessBoardConstants.Instance.Engine.AiPonderMove(); });
 
+        // Wait for Engine.Thinking to turn true
         yield return new WaitForSeconds(1);
 
         while (ChessBoardConstants.Instance.Engine.Thinking)
@@ -131,7 +141,7 @@ public class ChessPieceGrabManager : MonoBehaviour
                 EngineIsThinking = true;
                 Debug.Log("Engine is thinking...");
             }
-            
+
             yield return new WaitForFixedUpdate();
         }
 

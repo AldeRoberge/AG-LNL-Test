@@ -13,6 +13,11 @@ namespace Game.Scripts.ChessBoard.Models
             this.x = x;
             this.y = y;
         }
+
+        public override string ToString()
+        {
+            return "(" + "X : " + x + ", Y : " + y + ")";
+        }
     }
 
     public static class PositionUtils
