@@ -8,6 +8,13 @@ namespace Game.Scripts.ChessBoard
         public Position Position;
         private TargetPlaneHandler TargetPlaneHandler;
 
+        public bool IsValid { get; set; }
+
+        public void Awake()
+        {
+            InteractionWorld.Instance.AddTile(this);
+        }
+
         public void SetPosition(Position position)
         {
             TargetPlaneHandler = gameObject.AddComponent<TargetPlaneHandler>();
@@ -34,8 +41,22 @@ namespace Game.Scripts.ChessBoard
             piece.transform.localPosition = new Vector3(0,
                 boxHalfSize + pieceHalfSize,
                 0);
+
+            piece.transform.localScale = new Vector3(1, 1, 1);
+        }
+
+        public void SetValid(bool isValid)
+        {
+            if (isValid)
+            {
+                IsValid = isValid;
+                this.GetComponent<Renderer>().material.color = Color.green;
+            }
+            else
+            {
+                IsValid = isValid;
+                this.GetComponent<Renderer>().material.color = Color.white;
+            }
         }
     }
-
-
 }

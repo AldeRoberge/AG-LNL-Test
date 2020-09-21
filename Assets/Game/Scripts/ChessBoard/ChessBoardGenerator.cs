@@ -13,9 +13,18 @@ using UnityEngine.Events;
 using Object = UnityEngine.Object;
 
 
-public static class ChessBoardConstants
+public class ChessBoardConstants : Singleton<ChessBoardConstants>
 {
+    public Engine Engine;
+
+    
     public const int Size = 8;
+
+
+    public void Awake()
+    {
+        Engine = new Engine();
+    }
 }
 
 public class ChessBoardAssets : Singleton<ChessBoardAssets>
@@ -66,11 +75,10 @@ public class ChessBoardAssets : Singleton<ChessBoardAssets>
 
 public class ChessBoardGenerator : MonoBehaviour
 {
-    private Engine engine;
 
     public void Start()
     {
-        engine = new Engine("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+
         Generate();
     }
 
@@ -88,13 +96,13 @@ public class ChessBoardGenerator : MonoBehaviour
         tilesParent.transform.parent = board.transform;
         piecesParent.transform.parent = board.transform;
 
-        for (int x = 0; x < ChessBoardConstants.Size; x++)
+        for (byte x = 0; x < ChessBoardConstants.Size; x++)
         {
-            for (int y = 0; y < ChessBoardConstants.Size; y++)
+            for (byte y = 0; y < ChessBoardConstants.Size; y++)
             {
                 Tile tile = CreateTileAt(x, y, tilesParent);
 
-                GameObject piece = CreatePieceAt(x, y);
+                GameObject piece = CreatePieceAt(x, y, tile);
 
                 if (piece != null)
                 {
@@ -114,7 +122,7 @@ public class ChessBoardGenerator : MonoBehaviour
     /// <summary>
     /// Create a board tile at a given coordinate.
     /// </summary>
-    private Tile CreateTileAt(int x, int y, GameObject parent)
+    private Tile CreateTileAt(byte x, byte y, GameObject parent)
     {
         GameObject tilePrefab = ChessBoardAssets.Instance.TilePrefab;
 
@@ -136,9 +144,9 @@ public class ChessBoardGenerator : MonoBehaviour
     /// <summary>
     /// Creates a chess piece at a given coordinate.
     /// </summary>
-    private GameObject CreatePieceAt(int x, int y)
+    private GameObject CreatePieceAt(int x, int y, Tile tile)
     {
-        var type = engine.GetPieceTypeAt((byte) x, (byte) y);
+        var type = ChessBoardConstants.Instance.Engine.GetPieceTypeAt((byte) x, (byte) y);
 
         // Init prefab
         GameObject piecePrefab = null;
@@ -180,7 +188,7 @@ public class ChessBoardGenerator : MonoBehaviour
         piece.transform.position = Vector3.zero;
 
         // Set parent name and piece color
-        var color = engine.GetPieceColorAt((byte) x, (byte) y);
+        var color = ChessBoardConstants.Instance.Engine.GetPieceColorAt((byte) x, (byte) y);
 
         if (color == ChessPieceColor.White)
         {
@@ -203,6 +211,7 @@ public class ChessBoardGenerator : MonoBehaviour
 
 
         Grabbable g = parent.AddComponent<Grabbable>();
+        g.SetCurrentTile(tile);
 
         return parent;
     }

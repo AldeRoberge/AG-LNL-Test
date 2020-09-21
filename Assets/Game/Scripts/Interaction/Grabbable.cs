@@ -1,4 +1,5 @@
 ﻿using System;
+using Game.Scripts.ChessBoard;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -7,6 +8,8 @@ namespace DefaultNamespace
     {
         [HideInInspector] public GameObject GrabbingSphere;
 
+        public Tile Tile;
+        
         private GameObject GrabbedBy;
 
         public void Awake()
@@ -20,6 +23,11 @@ namespace DefaultNamespace
             GrabbingSphere.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             GrabbingSphere.transform.SetParent(transform, false);
             GrabbingSphere.transform.position = new Vector3(0, 0.5f, 0);
+        }
+
+        public void SetCurrentTile(Tile tile)
+        {
+            this.Tile = tile;
         }
 
         public void SetIsHovering(bool isHovering)
@@ -41,6 +49,7 @@ namespace DefaultNamespace
         public void GrabbingStopped()
         {
             GrabbedBy = null;
+            this.transform.parent = null;
         }
 
         public void GrabbingStart(GameObject GrabbedBy)

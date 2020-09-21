@@ -5,10 +5,10 @@ namespace Game.Scripts.ChessBoard.Models
 {
     public class Position
     {
-        public int x;
-        public int y;
+        public byte x;
+        public byte y;
 
-        public Position(int x, int y)
+        public Position(byte x, byte y)
         {
             this.x = x;
             this.y = y;
