@@ -28,10 +28,11 @@ public class GameClient : MonoBehaviour, INetEventListener
 
         if (peer != null && peer.ConnectionState == ConnectionState.Connected)
         {
-           Debug.Log("Connected...");
+           //Debug.Log("Connected...");
         }
         else
         {
+            Debug.Log("Connecting...");
             _netClient.SendBroadcast(new byte[] {1}, 9050);
         }
     }
@@ -44,12 +45,12 @@ public class GameClient : MonoBehaviour, INetEventListener
 
     public void OnPeerConnected(NetPeer peer)
     {
-        Debug.Log("[CLIENT] We connected to " + peer.EndPoint);
+        Debug.Log("[Client] We connected to " + peer.EndPoint);
     }
 
     public void OnNetworkError(IPEndPoint endPoint, SocketError socketErrorCode)
     {
-        Debug.Log("[CLIENT] We received error " + socketErrorCode);
+        Debug.Log("[Client] We received error " + socketErrorCode);
     }
 
     public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)
