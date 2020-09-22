@@ -37,8 +37,7 @@ namespace ResourcesLoader
             return default;
         }
     }
-
-
+    
     public class ResourceLoader
     {
         public static T Load<T>(string path, bool tryFallback = true) where T : Object
