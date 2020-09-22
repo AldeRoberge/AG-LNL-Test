@@ -37,8 +37,12 @@ namespace ResourcesLoader
             return default;
         }
     }
+
     
-    public class ResourceLoader
+    /// <summary>
+    /// Allows to load a resource and in case it is missing, a fall back.
+    /// </summary>
+    public static class ResourceLoader
     {
         public static T Load<T>(string path, bool tryFallback = true) where T : Object
         {
@@ -51,12 +55,14 @@ namespace ResourcesLoader
 
                 Debug.Log(
                     "[LoadableResource] Resource loaded from '" + path + "' is null.\n" +
-                    "Possible causes : The file extension is included in the resource file path.\n" +
-                    "The path does not exist.");
+                    "Possible causes : The file extension is included in the resource file path\n" +
+                    "or the path does not exist.");
             }
-
-            Debug.LogError("[LoadableResource] Path for resource is null or empty.");
-
+            else
+            {
+                Debug.LogError("[LoadableResource] Path for resource is null or empty.");
+            }
+            
             if (tryFallback)
                 return ResourcesFallback.GetFallback<T>() as T;
 

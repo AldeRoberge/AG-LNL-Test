@@ -18,7 +18,6 @@ public class GameClient : MonoBehaviour, INetEventListener
         _netClient.Start();
         
         _netClient.Connect("localhost" /* host ip or name */, 9050 /* port */, "SomeConnectionKey" /* text key or NetDataWriter */);
-
     }
 
     void Update()
