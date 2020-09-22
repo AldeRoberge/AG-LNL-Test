@@ -2,6 +2,7 @@
 using Game.Scripts;
 using Game.Scripts.ChessBoard;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace DefaultNamespace
 {
@@ -13,8 +14,8 @@ namespace DefaultNamespace
 
         private GameObject GrabbedBy;
 
-        private Color cachedColor;
-
+        public UnityEvent OnHoverStart = new UnityEvent();
+        public UnityEvent OnHoverStop = new UnityEvent();
 
         public void Awake()
         {
@@ -32,21 +33,19 @@ namespace DefaultNamespace
             {
                 GrabbingSphere.GetComponent<MeshRenderer>().enabled = false;
             }
-
-            cachedColor = GetComponentInChildren<MeshRenderer>().material.color;
         }
 
         public void SetCurrentTile(Tile tile)
         {
-            this.Tile = tile;
+            Tile = tile;
         }
 
-        public void SetIsHovering(bool isHovering)
+        public void SetIsHovered(bool isHovered)
         {
-            if (isHovering)
-                GetComponentInChildren<MeshRenderer>().material.color = Color.yellow;
+            if (isHovered)
+                OnHoverStart.Invoke();
             else
-                GetComponentInChildren<MeshRenderer>().material.color = cachedColor;
+                OnHoverStop.Invoke();
         }
 
         public void Update()
@@ -60,13 +59,11 @@ namespace DefaultNamespace
         public void GrabbingStopped()
         {
             GrabbedBy = null;
-            this.transform.parent = null;
         }
 
         public void GrabbingStart(GameObject GrabbedBy)
         {
             this.GrabbedBy = GrabbedBy;
-            this.transform.parent = GrabbedBy.transform;
         }
     }
 }

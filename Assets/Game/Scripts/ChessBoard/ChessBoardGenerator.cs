@@ -258,7 +258,8 @@ namespace Game.Scripts.ChessBoard
                 new Vector3(piece.transform.localScale.x / 2,
                     piece.transform.localScale.y / 2,
                     piece.transform.localScale.z / 2);
-
+            
+            piece.AddComponent<Piece>();
 
             Pieces.Add(parent);
 

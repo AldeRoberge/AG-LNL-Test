@@ -176,8 +176,8 @@ public class ChessPieceGrabManager : MonoBehaviour
             {
                 if (currentlyHovering == null) currentlyHovering = b;
 
-                currentlyHovering.SetIsHovering(false);
-                b.SetIsHovering(true);
+                currentlyHovering.SetIsHovered(false);
+                b.SetIsHovered(true);
 
                 currentlyHovering = b;
             }
