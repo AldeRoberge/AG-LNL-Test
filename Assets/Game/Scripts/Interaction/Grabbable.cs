@@ -13,8 +13,8 @@ namespace DefaultNamespace
 
         private GameObject GrabbedBy;
 
-
         private Color cachedColor;
+
 
         public void Awake()
         {
@@ -27,12 +27,12 @@ namespace DefaultNamespace
             GrabbingSphere.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             GrabbingSphere.transform.SetParent(transform, false);
             GrabbingSphere.transform.position = new Vector3(0, 0.5f, 0);
-            
+
             if (!Config.Debug)
             {
                 GrabbingSphere.GetComponent<MeshRenderer>().enabled = false;
             }
-            
+
             cachedColor = GetComponentInChildren<MeshRenderer>().material.color;
         }
 
