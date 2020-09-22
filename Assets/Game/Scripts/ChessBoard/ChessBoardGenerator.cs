@@ -19,8 +19,9 @@ namespace Game.Scripts.ChessBoard
 
         public const int Size = 8;
 
-        public void Awake()
+        public new void Awake()
         {
+            base.Awake();
             Engine = new Engine();
         }
     }
