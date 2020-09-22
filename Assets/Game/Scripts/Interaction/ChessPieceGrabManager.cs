@@ -18,7 +18,6 @@ public class ChessPieceGrabManager : MonoBehaviour
     void Start()
     {
         p = gameObject.AddComponent<PinchDetectorInitializer>();
-
         p.RightHandPinchDetector.OnPinchStart.AddListener(() => { Grab(p.RightHandPinchDetector.FingerTipObj); });
         p.RightHandPinchDetector.OnPinchEnd.AddListener(() => { StartCoroutine(Ungrab()); });
     }

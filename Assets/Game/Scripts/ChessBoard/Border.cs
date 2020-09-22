@@ -6,7 +6,7 @@ namespace Game.Scripts.ChessBoard
     {
         public void Start()
         {
-            this.GetComponent<Renderer>().material = ChessBoardAssets.Instance.BorderMaterial;
+            GetComponent<Renderer>().material = ChessBoardAssets.Instance.BorderMaterial;
         }
     }
 }

@@ -17,7 +17,7 @@ public class GameClient : MonoBehaviour, INetEventListener
         _netClient.UpdateTime = 15;
         _netClient.Start();
         
-        _netClient.Connect("localhost" /* host ip or name */, 9050 /* port */, "SomeConnectionKey" /* text key or NetDataWriter */);
+        _netClient.Connect("localhost" , 9050, "SomeConnectionKey");
     }
 
     void Update()

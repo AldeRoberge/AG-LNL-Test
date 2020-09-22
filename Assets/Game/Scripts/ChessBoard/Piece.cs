@@ -4,9 +4,11 @@ using UnityEngine;
 
 namespace Game.Scripts.ChessBoard
 {
-    public class Piece : MonoBehaviour
+    public class Piece : DestroyableMonoBehaviour
     {
         private Color CachedColor;
+
+        private Grabbable Grabbable;
 
         public void Start()
         {
@@ -16,9 +18,22 @@ namespace Game.Scripts.ChessBoard
 
         private void AddHoverListeners()
         {
-            Grabbable g = GetComponent<Grabbable>();
-            g.OnHoverStart.AddListener(() => { GetComponentInChildren<MeshRenderer>().material.color = Color.yellow; });
-            g.OnHoverStart.AddListener(() => { GetComponentInChildren<MeshRenderer>().material.color = CachedColor; });
+            Grabbable = GetComponentInParent<Grabbable>();
+            Grabbable.OnHoverStart.AddListener(() =>
+            {
+                
+                GetComponent<MeshRenderer>().material.color = Color.yellow;
+            });
+            Grabbable.OnHoverStop.AddListener(() =>
+            {
+                GetComponent<MeshRenderer>().material.color = CachedColor;
+            });
+        }
+
+        public override void Destroy()
+        {
+            InteractionWorld.Instance.RemoveGrabbable(Grabbable);
+            Destroy(gameObject);
         }
     }
 }

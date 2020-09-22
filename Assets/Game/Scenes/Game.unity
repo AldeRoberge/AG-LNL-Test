@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: OVRCameraRightWithHands
       objectReference: {fileID: 0}
+    - target: {fileID: 1787004314717788804, guid: 8b66956a867f63941accdacd869358ca, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1827248075516670531, guid: 8b66956a867f63941accdacd869358ca, type: 3}
       propertyPath: _enablePhysicsCapsules
       value: 0
@@ -315,7 +319,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1955879892
 Transform:
   m_ObjectHideFlags: 0

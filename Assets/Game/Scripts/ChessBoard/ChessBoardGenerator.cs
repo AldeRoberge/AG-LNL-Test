@@ -69,7 +69,7 @@ namespace Game.Scripts.ChessBoard
             PawnData = ResourceLoader.Load<GameObject>("Chess/Pieces/Prefabs/Pawn");
 
             TargetPlaneMaterial = ResourceLoader.Load<Material>("Chess/Interaction/TargetPlane/Green");
-            
+
             BorderMaterial = ResourceLoader.Load<Material>("Chess/Border/Materials/Border");
         }
     }
@@ -78,16 +78,15 @@ namespace Game.Scripts.ChessBoard
     {
         public List<Tile> Tiles = new List<Tile>();
 
-        public List<GameObject> Pieces = new List<GameObject>();
+        public List<Piece> Pieces = new List<Piece>();
 
         public IEnumerator RegenPieces()
         {
             Debug.Log("Regenerating all " + Pieces.Count + " pieces...");
 
-            foreach (GameObject o in Pieces)
+            foreach (Piece o in Pieces)
             {
-                InteractionWorld.Instance.RemoveGrabbable(o.GetComponent<Grabbable>());
-                Destroy(o);
+                o.Destroy();
             }
 
             Pieces.Clear();
@@ -248,8 +247,7 @@ namespace Game.Scripts.ChessBoard
             }
 
             BoxCollider b = piece.AddComponent<BoxCollider>();
-
-
+            
             Grabbable g = parent.AddComponent<Grabbable>();
             g.SetCurrentTile(tile);
 
@@ -258,14 +256,11 @@ namespace Game.Scripts.ChessBoard
                 new Vector3(piece.transform.localScale.x / 2,
                     piece.transform.localScale.y / 2,
                     piece.transform.localScale.z / 2);
-            
-            piece.AddComponent<Piece>();
 
-            Pieces.Add(parent);
+            Piece p = piece.AddComponent<Piece>();
+            Pieces.Add(p);
 
             return parent;
         }
     }
-
-
 }

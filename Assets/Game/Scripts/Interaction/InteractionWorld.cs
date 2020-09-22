@@ -20,6 +20,11 @@ public class InteractionWorld : Singleton<InteractionWorld>
     {
         Grabbables.Add(grabbable);
     }
+    
+    public void RemoveGrabbable(Grabbable grabbable)
+    {
+        Grabbables.Remove(grabbable);
+    }
 
     public void AddTile(Tile tile)
     {
@@ -68,8 +73,5 @@ public class InteractionWorld : Singleton<InteractionWorld>
         return t;
     }
 
-    public void RemoveGrabbable(Grabbable grabbable)
-    {
-        Grabbables.Remove(grabbable);
-    }
+   
 }
